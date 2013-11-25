@@ -6,7 +6,8 @@ window.applicationCache.addEventListener('updateready', function (e) {
 
 function mSimpleNav() {
 	var currentLocation, destination,
-		destinationBearing, deviceBearing = 0, compassBearing = 0, deviceTilt = 0,
+		destinationBearing, deviceBearing = 0, compassBearing = 0,
+		deviceTilt = 0, tiltProperty = 'beta', tiltQuantifier = 1,
 		currentLocationTimeout, deviceBearingTimeout,
 		intervalDelay = 100;
 	
@@ -28,9 +29,23 @@ function mSimpleNav() {
 				}
 				
 				setDeviceBearing(compassHeading);
-				setDeviceTilt(e.beta);
+				setDeviceTilt(e[tiltProperty] * tiltQuantifier);
 			}, false);
 		}
+		
+		window.addEventListener('orientationchange', function (e) {
+			if (window.orientation == 90 || window.orientation == -90) {
+				tiltProperty = 'gamma';
+				if (window.orientation == 90) {
+					tiltQuantifier = -1;
+				} else {
+					tiltQuantifier = 1;
+				}
+			} else {
+				tiltProperty = 'beta';
+				tiltQuantifier = 1;
+			}
+		});
 	}
 	
 	function removeSensorListeners() {
