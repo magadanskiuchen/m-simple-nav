@@ -49,26 +49,45 @@ input[type="text"] { margin-right: 12px; border: 1px solid #999; border-radius: 
 	transition: all 0.3s ease;
 }
 
-#compass:before, #compass:after {
+#compass span {
 	content: ' ';
 	position: absolute;
-	top: 15px;
+	z-index: 1;
+	top: 10px;
+	-webkit-transform-style: preserve-3d;
+}
+
+#compass .light {
+	left: 41px;
+	-webkit-transform: rotateZ(-22.62deg) translateZ(5px);
+}
+
+#compass .dark {
+	right: 41px;
+	-webkit-transform: rotateZ(22.62deg) translateZ(5px);
+}
+
+#compass span:before {
+	content: ' ';
+	position: absolute;
+	top: 0;
 	border-bottom-width: 144px;
 	border-bottom-style: solid;
+	-webkit-transform-style: preserve-3d;
 }
 
-#compass:before {
-	left: 40px;
+#compass .light:before {
+	left: 0;
 	border-left: 60px solid transparent;
 	border-bottom-color: #1262B2;
-	-webkit-transform: rotateY(-32deg) rotateX(14deg) rotateZ(-8.5deg) translate(5px, 0);
+	-webkit-transform: rotateZ(22.62deg) rotateX(12deg) rotateY(-30deg) translate(-26px, 26px);
 }
 
-#compass:after {
-	right: 40px;
+#compass .dark:before {
+	right: 0;
 	border-right: 60px solid transparent;
 	border-bottom-color: #1111A6;
-	-webkit-transform: rotateY(32deg) rotateX(14deg) rotateZ(8.5deg) translate(-5px, 0);
+	-webkit-transform: rotateZ(-22.62deg) rotateX(12deg) rotateY(30deg) translate(26px, 26px);
 }
 
 .tab-preview { display: none; }
