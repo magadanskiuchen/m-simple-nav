@@ -6,7 +6,7 @@ window.applicationCache.addEventListener('updateready', function (e) {
 
 function mSimpleNav() {
 	var currentLocation, destination,
-		destinationBearing, deviceBearing = 0, deviceTilt = 0,
+		destinationBearing, deviceBearing = 0, compassBearing = 0, deviceTilt = 0,
 		currentLocationTimeout, deviceBearingTimeout,
 		intervalDelay = 100;
 	
@@ -60,10 +60,22 @@ function mSimpleNav() {
 		}
 	}
 	
+	function getCompassBearing() {
+		var newCompassBearing = destinationBearing - deviceBearing;
+		
+		if ( Math.abs( compassBearing - newCompassBearing ) < Math.abs( 360 + compassBearing - newCompassBearing ) ) {
+			compassBearing = newCompassBearing;
+		} else {
+			compassBearing = newCompassBearing - 360;
+		}
+		
+		return compassBearing;
+	}
+	
 	function render() {
 		if (currentLocation instanceof LatLon && destination instanceof LatLon) {
 			document.getElementById('distance').innerText = currentLocation.distanceTo(destination) + ' km';
-			document.getElementById('compass').style.webkitTransform = 'rotateX(' + deviceTilt + 'deg) rotateZ(' + (destinationBearing - deviceBearing) + 'deg)';
+			document.getElementById('compass').style.webkitTransform = 'rotateX(' + deviceTilt + 'deg) rotateZ(' + getCompassBearing() + 'deg)';
 		}
 	}
 	
