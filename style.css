@@ -1,0 +1,77 @@
+@charset "utf-8";
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-text-size-adjust: none; }
+html, body { width: 100%; height: 100%; }
+
+body { background: #333; color: #FFF; font: normal 14px/1.2 Arial, Helvetica, sans-serif; }
+
+#input { width: 90%; margin: 0 auto; padding: 15px 0 0; }
+
+.tabs { margin-bottom: 15px; list-style-type: none; overflow: hidden; }
+.tabs li { display: inline; float: left; margin-right: 15px; }
+.tabs li:last-child { margin: 0; }
+.tabs li a,
+input[type="button"],
+input[type="submit"] { display: inline-block; padding: 6px 12px; border: 1px solid #999; border-radius: 2px; color: #333; text-decoration: none; text-shadow: 1px 1px #FFF;
+	background: #E0E0E0; /* Old browsers */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2UwZTBlMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNjY2NjY2MiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  #E0E0E0 0%, #CCC 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#E0E0E0), color-stop(100%,#CCC)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #E0E0E0 0%,#CCC 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #E0E0E0 0%,#CCC 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #E0E0E0 0%,#CCC 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #E0E0E0 0%,#CCC 100%); /* W3C */
+}
+
+input { margin-bottom: 15px; padding: 5px 12px; font-size: 14px; line-height: 1.2; vertical-align: middle; }
+input[type="button"], input[type="submit"] { cursor: pointer; }
+input[type="text"] { margin-right: 12px; border: 1px solid #999; border-radius: 2px; color: #333; line-height: 1.4;
+	background: #E0E0E0; /* Old browsers */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2UwZTBlMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNjY2NjY2MiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  #E0E0E0 0%, #FFF 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#E0E0E0), color-stop(100%,#FFF)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #E0E0E0 0%,#FFF 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #E0E0E0 0%,#FFF 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #E0E0E0 0%,#FFF 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #E0E0E0 0%,#FFF 100%); /* W3C */
+}
+
+#compass {
+	position: relative;
+	width: 206px;
+	height: 206px;
+	margin: 15px auto;
+	border: 3px solid #FF0;
+	border-radius: 50%;
+	-webkit-perspective: 200px;
+	-webkit-transform-style: preserve-3d;
+	-webkit-transform: rotateX(0deg) rotateZ(0deg);
+	transition: all 0.3s ease;
+}
+
+#compass:before, #compass:after {
+	content: ' ';
+	position: absolute;
+	top: 15px;
+	border-bottom-width: 144px;
+	border-bottom-style: solid;
+}
+
+#compass:before {
+	left: 40px;
+	border-left: 60px solid transparent;
+	border-bottom-color: #1262B2;
+	-webkit-transform: rotateY(-32deg) rotateX(14deg) rotateZ(-8.5deg) translate(5px, 0);
+}
+
+#compass:after {
+	right: 40px;
+	border-right: 60px solid transparent;
+	border-bottom-color: #1111A6;
+	-webkit-transform: rotateY(32deg) rotateX(14deg) rotateZ(8.5deg) translate(-5px, 0);
+}
+
+.tab-preview { display: none; }
+.tab-preview:target { display: block; }
+
+#distance { font-size: 24px; text-align: center; }
