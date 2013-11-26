@@ -28,7 +28,10 @@ function mSimpleNav() {
 					compassHeading = e.webkitCompassHeading;
 				}
 				
-				setDeviceBearing(compassHeading);
+				if (typeof(compassHeading)) {
+					setDeviceBearing(compassHeading);
+				}
+				
 				setDeviceTilt(e[tiltProperty] * tiltQuantifier);
 			}, false);
 		}
