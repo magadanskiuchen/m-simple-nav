@@ -16,7 +16,8 @@
 	<link rel="apple-touch-icon" sizes="152x152" href="icons/touch-icon-ipad@2x.png" />
 	<link rel="stylesheet" type="text/css" href="style.css" />
 	
-	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3.14&amp;sensor=true"></script>
+	<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?v=3.14&amp;sensor=true"></script>
+	<script type="text/javascript" src="js/rAF.js"></script>
 	<script type="text/javascript" src="js/geo.js"></script>
 	<script type="text/javascript" src="js/latlng.js"></script>
 	<script type="text/javascript" src="js/functions.js"></script>
@@ -34,8 +35,8 @@
 		</form>
 		
 		<form id="coordinates-form" class="tab-preview">
-			<input type="text" id="lat" name="lat" placeholder="Latitude" />
-			<input type="text" id="lng" name="lng" placeholder="Longitude" />
+			<input type="text" id="lat" name="lat" class="lat" placeholder="Latitude" />
+			<input type="text" id="lng" name="lng" class="lng" placeholder="Longitude" />
 			<input type="submit" name="search_by_coordinates" value="Search" />
 		</form>
 	</div>
