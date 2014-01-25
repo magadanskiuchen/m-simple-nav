@@ -27,6 +27,7 @@
 		<ul class="tabs">
 			<li><a href="#address-form">Address</a></li>
 			<li><a href="#coordinates-form">Coordinates</a></li>
+			<li><a href="#favorites-form">Favorites</a></li>
 		</ul>
 		
 		<form id="address-form" class="tab-preview">
@@ -38,6 +39,12 @@
 			<input type="text" id="lat" name="lat" class="lat" placeholder="Latitude" />
 			<input type="text" id="lng" name="lng" class="lng" placeholder="Longitude" />
 			<input type="submit" name="search_by_coordinates" value="Search" />
+		</form>
+		
+		<form id="favorites-form" class="tab-preview">
+			<ul></ul>
+			
+			<input type="submit" name="add_to_favorites" value="Save" />
 		</form>
 	</div>
 	

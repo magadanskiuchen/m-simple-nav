@@ -24,6 +24,7 @@ Function.prototype.inherits = function (parent) {
 com.magadanski.EventDispatcher,
 com.magadanski.mSimpleNav.GPS,
 com.magadanski.mSimpleNav.Compass,
+com.magadanski.mSimpleNav.Storage,
 com.magadanski.mSimpleNav.MSimpleNav;
 
 //////////////////////////////////////////
@@ -33,7 +34,7 @@ com.magadanski.mSimpleNav.MSimpleNav;
 	// import class
 	var that;
 	var EventDispatcher = function () {
-		
+		that = this;
 	}
 	com.magadanski.EventDispatcher = EventDispatcher;
 	
@@ -203,6 +204,30 @@ com.magadanski.mSimpleNav.MSimpleNav;
 })();
 
 //////////////////////////////////////
+// Storage Class Implementation //////
+//////////////////////////////////////
+(function () {
+	// import class
+	var that;
+	var Storage = function () {
+		that = this;
+	}
+	Storage.inherits(com.magadanski.EventDispatcher);
+	com.magadanski.mSimpleNav.Storage = Storage;
+	
+	// private properties
+	
+	// public properties
+	
+	// private methods
+	
+	// public methods
+	Storage.prototype.add = function (table, entry) {
+		
+	}
+})();
+
+//////////////////////////////////////
 // MSimpleNav Class Implementation ///
 //////////////////////////////////////
 (function () {
@@ -214,6 +239,7 @@ com.magadanski.mSimpleNav.MSimpleNav;
 		geocoder = new google.maps.Geocoder();
 		gps = new com.magadanski.mSimpleNav.GPS(true);
 		compass = new com.magadanski.mSimpleNav.Compass();
+		storage = new com.magadanski.mSimpleNav.Storage();
 		
 		that.addEventListener('geocoded', onGeocoded);
 		
@@ -227,6 +253,7 @@ com.magadanski.mSimpleNav.MSimpleNav;
 		geocoder,
 		gps,
 		compass,
+		storage,
 		displayBearing;
 	
 	// public properties
@@ -299,27 +326,48 @@ com.magadanski.mSimpleNav.MSimpleNav;
 			that.dispatchEvent('geocoded', { result: result, status: status });
 		});
 	}
+	
+	MSimpleNav.prototype.saveLocation = function (name, lat, lng) {
+		var location = { name: name, lat: lat, lng: lng };
+		
+		storage.add('locations', location);
+		that.dispatchEvent('locationsUpdated');
+	}
 })();
 
 document.addEventListener('DOMContentLoaded', function (e) {
 	var app = new com.magadanski.mSimpleNav.MSimpleNav();
 	var addressForm = document.getElementById('address-form');
 	var coordinatesForm = document.getElementById('coordinates-form');
+	var favoritesForm = document.getElementById('favorites-form');
 	
 	coordinatesForm.addEventListener('submit', function (e) {
 		e.preventDefault();
+		
 		app.setDestination(document.getElementById('lat').value, document.getElementById('lng').value);
 	});
 	
 	addressForm.addEventListener('submit', function (e) {
 		e.preventDefault();
+		
 		app.addEventListener('geocoded', function (e) {
 			var location = e.result[0].geometry.location;
 			
 			document.getElementById('lat').value = location.lat();
 			document.getElementById('lng').value = location.lng();
 		});
+		
 		app.geocode(document.getElementById('address').value);
+	});
+	
+	favoritesForm.addEventListener('submit', function (e) {
+		e.preventDefault();
+		
+		var name = prompt('Name this location', document.getElementById('addressForm').value);
+		var lat = document.getElementById('lat');
+		var lng = document.getElementById('lng');
+		
+		app.saveLocation(name, lat, lng);
 	});
 	
 	// stupid iOS7
