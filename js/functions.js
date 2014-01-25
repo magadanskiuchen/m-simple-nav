@@ -3,10 +3,71 @@ com = typeof(com) == 'undefined' ? {} : com;
 com.magadanski = typeof(com.magadanski) == 'undefined' ? {} : com.magadanski;
 com.magadanski.mSimpleNav = typeof(com.magadanski.mSimpleNav) == 'undefined' ? {} : com.magadanski.mSimpleNav;
 
+// JS class inheritance
+Function.prototype.inherits = function (parent) {
+	if (parent.constructor == Function) {
+		//Normal Inheritance
+		this.prototype = new parent;
+		this.prototype.constructor = this;
+		this.prototype.parent = parent.prototype;
+	} else {
+		//Pure Virtual Inheritance
+		this.prototype = parent;
+		this.prototype.constructor = this;
+		this.prototype.parent = parent;
+	}
+	
+	return this;
+}
+
 // class instantiation (header)
+com.magadanski.EventDispatcher,
 com.magadanski.mSimpleNav.GPS,
 com.magadanski.mSimpleNav.Compass,
 com.magadanski.mSimpleNav.MSimpleNav;
+
+//////////////////////////////////////////
+// EventDispatcher Class Implementation //
+//////////////////////////////////////////
+(function () {
+	// import class
+	var that;
+	var EventDispatcher = function () {
+		
+	}
+	com.magadanski.EventDispatcher = EventDispatcher;
+	
+	// private properties
+	var events = {};
+	
+	// public properties
+	
+	// private methods
+	
+	// public methods
+	EventDispatcher.prototype.addEventListener = function (eventType, callback) {
+		if (typeof(events[eventType]) == 'undefined') events[eventType] = [];
+		
+		events[eventType].push(callback);
+	}
+	
+	EventDispatcher.prototype.dispatchEvent = function (eventType, eventObj) {
+		if (typeof(eventObj) == 'undefined') {
+			eventObj = {};
+		}
+		
+		if (typeof(events[eventType]) == 'object') {
+			for (var callback in events[eventType]) {
+				eventObj.type = eventType;
+				eventObj.currentTarget = this;
+				
+				if (typeof(events[eventType][callback]) == 'function') {
+					events[eventType][callback](eventObj);
+				}
+			}
+		}
+	}
+})();
 
 //////////////////////////////////////
 // GPS Class Implementation //////////
@@ -20,6 +81,7 @@ com.magadanski.mSimpleNav.MSimpleNav;
 		that.highAccuracy = !!enableHighAccuracy;
 		updateLocation();
 	}
+	GPS.inherits(com.magadanski.EventDispatcher);
 	com.magadanski.mSimpleNav.GPS = GPS;
 	
 	// private properties
@@ -35,16 +97,11 @@ com.magadanski.mSimpleNav.MSimpleNav;
 			navigator.geolocation.getCurrentPosition(function (position) {
 				location = new LatLon(position.coords.latitude, position.coords.longitude);
 				
-				// TODO: add cutom event dispatch capabilities
-				// that.dispatchEvent(new CustomEvent('locationChange', {
-				// 	detail: {
-				// 		message: 'device location has changed',
-				// 		lat: lat,
-				// 		lng: lng
-				// 	},
-				// 	bubbles: true,
-				// 	cancelable: true
-				// }));
+				that.dispatchEvent('locationChange', {
+					message: 'device location has changed',
+					lat: lat,
+					lng: lng
+				});
 				
 				setTimeout(function () {
 					// make new request no sooner than timeout AND next frame render
@@ -100,16 +157,11 @@ com.magadanski.mSimpleNav.MSimpleNav;
 				
 				tilt = e[tiltProperty] * tiltQuantifier;
 				
-				// TODO: add cutom event dispatch capabilities
-				// that.dispatchEvent(new CustomEvent('compassupdate', {
-				// 	detail: {
-				// 		message: 'compass data has changed',
-				// 		deviceBearing: compassHeading,
-				// 		deviceTilt: tilt,
-				// 	},
-				// 	bubbles: true,
-				// 	cancelable: true
-				// }));
+				that.dispatchEvent('compassupdate', {
+					message: 'compass data has changed',
+					deviceBearing: compassHeading,
+					deviceTilt: tilt
+				});
 			});
 		}
 		
@@ -127,6 +179,7 @@ com.magadanski.mSimpleNav.MSimpleNav;
 			}
 		});
 	}
+	Compass.inherits(com.magadanski.EventDispatcher);
 	com.magadanski.mSimpleNav.Compass = Compass;
 	
 	// private properties
@@ -162,8 +215,11 @@ com.magadanski.mSimpleNav.MSimpleNav;
 		gps = new com.magadanski.mSimpleNav.GPS(true);
 		compass = new com.magadanski.mSimpleNav.Compass();
 		
+		that.addEventListener('geocoded', onGeocoded);
+		
 		render();
 	}
+	MSimpleNav.inherits(com.magadanski.EventDispatcher);
 	com.magadanski.mSimpleNav.MSimpleNav = MSimpleNav;
 	
 	// private properties
@@ -191,6 +247,35 @@ com.magadanski.mSimpleNav.MSimpleNav;
 		requestAnimationFrame(render);
 	}
 	
+	function onGeocoded(e) {
+		switch (e.status) {
+			case google.maps.GeocoderStatus.OK:
+				// Bookmark address capabilities
+				var location = e.result[0].geometry.location;
+				
+				that.setDestination(location.lat(), location.lng());
+				break;
+			case google.maps.GeocoderStatus.ERROR:
+				alert('Cannot get coordinates for location. Check your internet connection.');
+				break;
+			case google.maps.GeocoderStatus.INVALID_REQUEST:
+				alert('Contact the developer and let them know that an invalid request error occured.');
+				break;
+			case google.maps.GeocoderStatus.OVER_QUERY_LIMIT:
+				alert('You have made too many queries for too short time. Try again in 10 minutes.');
+				break;
+			case google.maps.GeocoderStatus.REQUEST_DENIED:
+				alert('Contact the developer and let them know that a request denied error occured.');
+				break;
+			case google.maps.GeocoderStatus.UNKNOWN_ERROR:
+				alert('Ooops, we could not find what you were looking for. Please try again.');
+				break;
+			case google.maps.GeocoderStatus.ZERO_RESULTS:
+				alert('No results were found for that address. Please try modifying that and searching again.');
+				break;
+		}
+	}
+	
 	// public methods
 	MSimpleNav.prototype.setDestination = function (lat, lng) {
 		// normalize lat and lng values
@@ -201,47 +286,17 @@ com.magadanski.mSimpleNav.MSimpleNav;
 		
 		destination = new LatLon(lat, lng);
 		
-		// TODO: add cutom event dispatch capabilities
-		// that.dispatchEvent(new CustomEvent('destinationChange', {
-		// 	detail: {
-		// 		message: 'destination has changed',
-		// 		lat: lat,
-		// 		lng: lng
-		// 	},
-		// 	bubbles: true,
-		// 	cancelable: true
-		// }));
+		that.dispatchEvent('destinationChange', {
+			message: 'destination has changed',
+			lat: lat,
+			lng: lng
+		});
 	}
 	
 	MSimpleNav.prototype.geocode = function (address) {
 		// TODO: i18n
 		geocoder.geocode({ address: address }, function (result, status) {
-			switch (status) {
-				case google.maps.GeocoderStatus.OK:
-					// Bookmark address capabilities
-					var location = result[0].geometry.location;
-					
-					that.setDestination(location.lat(), location.lng());
-					break;
-				case google.maps.GeocoderStatus.ERROR:
-					alert('Cannot get coordinates for location. Check your internet connection.');
-					break;
-				case google.maps.GeocoderStatus.INVALID_REQUEST:
-					alert('Contact the developer and let them know that an invalid request error occured.');
-					break;
-				case google.maps.GeocoderStatus.OVER_QUERY_LIMIT:
-					alert('You have made too many queries for too short time. Try again in 10 minutes.');
-					break;
-				case google.maps.GeocoderStatus.REQUEST_DENIED:
-					alert('Contact the developer and let them know that a request denied error occured.');
-					break;
-				case google.maps.GeocoderStatus.UNKNOWN_ERROR:
-					alert('Ooops, we could not find what you were looking for. Please try again.');
-					break;
-				case google.maps.GeocoderStatus.ZERO_RESULTS:
-					alert('No results were found for that address. Please try modifying that and searching again.');
-					break;
-			}
+			that.dispatchEvent('geocoded', { result: result, status: status });
 		});
 	}
 })();
@@ -258,6 +313,12 @@ document.addEventListener('DOMContentLoaded', function (e) {
 	
 	addressForm.addEventListener('submit', function (e) {
 		e.preventDefault();
+		app.addEventListener('geocoded', function (e) {
+			var location = e.result[0].geometry.location;
+			
+			document.getElementById('lat').value = location.lat();
+			document.getElementById('lng').value = location.lng();
+		});
 		app.geocode(document.getElementById('address').value);
 	});
 	
