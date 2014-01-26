@@ -225,9 +225,24 @@ com.magadanski.mSimpleNav.MSimpleNav;
 					for (var p in tables[t]) {
 						prop = p;
 						
+						// check if field type is set
+						if (typeof(tables[t][p].type) != 'undefined') {
+							prop += ' ' + tables[t][p].type;
+						}
+						
+						// check if field should be primary key
+						if (tables[t][p].primaryKey) {
+							prop += ' PRIMARY KEY';
+						}
+						
+						// check if field should auto increment
+						if (tables[t][p].autoIncrement) {
+							prop += ' AUTOINCREMENT';
+						}
+						
 						// check if field should be unique
 						if (tables[t][p].unique) {
-							prop += ' unique';
+							prop += ' UNIQUE';
 						}
 						
 						fields.push(prop);
@@ -259,7 +274,7 @@ com.magadanski.mSimpleNav.MSimpleNav;
 	}
 	
 	// public methods
-	Storage.prototype.add = function (table, entry) {
+	Storage.prototype.add = function (table, entry, callback) {
 		db.transaction(function (tx) {
 			var fields = [];
 			var values = [];
@@ -269,13 +284,53 @@ com.magadanski.mSimpleNav.MSimpleNav;
 				values.push(entry[p]);
 			}
 			
-			var fq = getPlaceholder(fields);
 			var vq = getPlaceholder(values);
 			
-			tx.executeSql('INSERT INTO ?(' + fq + ') VALUES(' + vq + ')', [table].concat(fields).concat(values), function (tx, results) {
-				// success
+			tx.executeSql('INSERT INTO ' + table + '(' + fields.join(', ') + ') VALUES(' + vq + ')', values, function (tx, results) {
+				that.dispatchEvent('insert', { tx: tx, results: results });
+				
+				if (typeof(callback) == 'function') {
+					callback(tx, results);
+				}
 			}, function (tx, error) {
-				console.log(tx, error);
+				alert('There was an error saving your location. Please try again. If this remains happening contact the developer.');
+			});
+		});
+	}
+	
+	Storage.prototype.get = function (table, options, callback) {
+		db.transaction(function (tx) {
+			var select = 'SELECT ';
+			var from = ' FROM ' + table;
+			var where = '';
+			var parameters = [];
+			
+			if (typeof(options.fields) != 'undefined') {
+				select += options.fields.join(', ');
+			} else {
+				select += '*';
+			}
+			
+			if (typeof(options.conditions) != 'undefined') {
+				where += ' WHERE ';
+				var conditions = [];
+				
+				for (var c in options.conditions) {
+					if (typeof(options.conditions.operator) == 'undefined') {
+						options.conditions.operator = '=';
+					}
+					
+					conditions.push(options.conditions[c].field + ' ' + options.conditions.operator + ' ?');
+					parameters.push(options.conditions[c].value);
+				}
+			}
+			
+			tx.executeSql(select + from + where, parameters, function (tx, results) {
+				if (typeof(callback) == 'function') {
+					callback(results);
+				}
+			}, function (tx, error) {
+				alert('Could not retrieve entries. Please contact developer.');
 			});
 		});
 	}
@@ -311,7 +366,7 @@ com.magadanski.mSimpleNav.MSimpleNav;
 		displayBearing;
 	
 	var tables = {
-		'locations': { id: { unique: true }, name: {}, lat: {}, lng: {} }
+		'locations': { id: { type: 'INTEGER', primaryKey: true, autoIncrement: true }, name: { type: 'TEXT' }, lat: { type: 'TEXT' }, lng: { type: 'TEXT' } }
 	}
 	
 	// public properties
@@ -388,8 +443,13 @@ com.magadanski.mSimpleNav.MSimpleNav;
 	MSimpleNav.prototype.saveLocation = function (name, lat, lng) {
 		var location = { name: name, lat: lat, lng: lng };
 		
-		storage.add('locations', location);
-		that.dispatchEvent('locationsUpdated');
+		storage.add('locations', location, function (tx, results) {
+			that.dispatchEvent('locationsUpdated', { results: results });
+		});
+	}
+	
+	MSimpleNav.prototype.getLocations = function (callback) {
+		storage.get('locations', {}, callback);
 	}
 })();
 
@@ -398,6 +458,28 @@ document.addEventListener('DOMContentLoaded', function (e) {
 	var addressForm = document.getElementById('address-form');
 	var coordinatesForm = document.getElementById('coordinates-form');
 	var favoritesForm = document.getElementById('favorites-form');
+	
+	function renderLocations() {
+		var ul = favoritesForm.querySelector('ul');
+		
+		app.getLocations(function (results) {
+			for (var i = 0; i < results.rows.length; i++) {
+				var location = results.rows.item(i);
+				
+				var liHtml =
+					'<li>' +
+						'<a href="#"' +
+							'data-location-id="' + location.id + '"' +
+							'data-location-lat="' + location.lat + '"' +
+							'data-location-lng="' + location.lng + '">' +
+							location.name +
+						'</a>' +
+					'</li>';
+				
+				ul.innerHTML += liHtml;
+			}
+		});
+	}
 	
 	coordinatesForm.addEventListener('submit', function (e) {
 		e.preventDefault();
@@ -428,8 +510,14 @@ document.addEventListener('DOMContentLoaded', function (e) {
 		app.saveLocation(name, lat, lng);
 	});
 	
+	app.addEventListener('locationsUpdated', function (e) {
+		renderLocations();
+	});
+	
 	// stupid iOS7
 	if (navigator.userAgent.match(/CPU\sOS\s7_/)) {
 		document.body.style.paddingTop = '24px';
 	}
+	
+	renderLocations();
 });
