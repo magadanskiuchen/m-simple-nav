@@ -209,21 +209,75 @@ com.magadanski.mSimpleNav.MSimpleNav;
 (function () {
 	// import class
 	var that;
-	var Storage = function () {
+	var Storage = function (tables) {
 		that = this;
+		
+		db = openDatabase('mSimpleNavFavorites', '1.0', 'M Simple Nav Favorites', 2*1024*1024);
+		db.transaction(function (tx) {
+			// database created callback
+			if (typeof(tables) != 'undefined') {
+				// cycle through all tables in object
+				for (var t in tables) {
+					var fields = [];
+					var prop = '';
+					
+					// cycle through all fields in table
+					for (var p in tables[t]) {
+						prop = p;
+						
+						// check if field should be unique
+						if (tables[t][p].unique) {
+							prop += ' unique';
+						}
+						
+						fields.push(prop);
+					}
+					
+					q = fields.join(', ');
+					
+					// create table with associated fields
+					tx.executeSql('CREATE TABLE IF NOT EXISTS ' + t + '(' + q + ')', null, function (tx, results) {
+						// success
+					}, function (tx, error) {
+						alert('There was an error with setting up favorites data storage. Please contact the developer.');
+					});
+				}
+			}
+		});
 	}
 	Storage.inherits(com.magadanski.EventDispatcher);
 	com.magadanski.mSimpleNav.Storage = Storage;
 	
 	// private properties
+	var db;
 	
 	// public properties
 	
 	// private methods
+	function getPlaceholder(values) {
+		return Array(values.length + 1).join('?').split('').join(', ');
+	}
 	
 	// public methods
 	Storage.prototype.add = function (table, entry) {
-		
+		db.transaction(function (tx) {
+			var fields = [];
+			var values = [];
+			
+			for (var p in entry) {
+				fields.push(p);
+				values.push(entry[p]);
+			}
+			
+			var fq = getPlaceholder(fields);
+			var vq = getPlaceholder(values);
+			
+			tx.executeSql('INSERT INTO ?(' + fq + ') VALUES(' + vq + ')', [table].concat(fields).concat(values), function (tx, results) {
+				// success
+			}, function (tx, error) {
+				console.log(tx, error);
+			});
+		});
 	}
 })();
 
@@ -239,7 +293,7 @@ com.magadanski.mSimpleNav.MSimpleNav;
 		geocoder = new google.maps.Geocoder();
 		gps = new com.magadanski.mSimpleNav.GPS(true);
 		compass = new com.magadanski.mSimpleNav.Compass();
-		storage = new com.magadanski.mSimpleNav.Storage();
+		storage = new com.magadanski.mSimpleNav.Storage(tables);
 		
 		that.addEventListener('geocoded', onGeocoded);
 		
@@ -255,6 +309,10 @@ com.magadanski.mSimpleNav.MSimpleNav;
 		compass,
 		storage,
 		displayBearing;
+	
+	var tables = {
+		'locations': { id: { unique: true }, name: {}, lat: {}, lng: {} }
+	}
 	
 	// public properties
 	
@@ -363,9 +421,9 @@ document.addEventListener('DOMContentLoaded', function (e) {
 	favoritesForm.addEventListener('submit', function (e) {
 		e.preventDefault();
 		
-		var name = prompt('Name this location', document.getElementById('addressForm').value);
-		var lat = document.getElementById('lat');
-		var lng = document.getElementById('lng');
+		var name = prompt('Name this location', document.getElementById('address').value);
+		var lat = document.getElementById('lat').value;
+		var lng = document.getElementById('lng').value;
 		
 		app.saveLocation(name, lat, lng);
 	});
