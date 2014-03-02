@@ -79,6 +79,10 @@ com.magadanski.mSimpleNav.MSimpleNav;
 	var GPS = function (enableHighAccuracy) {
 		that = this;
 		
+		if (typeof(enableHighAccuracy) == 'undefined') {
+			enableHighAccuracy = true;
+		}
+		
 		that.highAccuracy = !!enableHighAccuracy;
 		updateLocation();
 	}
