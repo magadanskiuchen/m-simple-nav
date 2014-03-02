@@ -491,12 +491,14 @@ document.addEventListener('DOMContentLoaded', function (e) {
 			}
 			
 			var anchors = ul.querySelectorAll('a');
-			for (var i in anchors) {
-				anchors.item(i).addEventListener('click', function (e) {
-						e.preventDefault();
-						
-						app.setDestination(e.currentTarget.dataset.locationLat, e.currentTarget.dataset.locationLng);
-				});
+			if (anchors.length) {
+				for (var i in anchors) {
+					anchors.item(i).addEventListener('click', function (e) {
+							e.preventDefault();
+							
+							app.setDestination(e.currentTarget.dataset.locationLat, e.currentTarget.dataset.locationLng);
+					});
+				}
 			}
 		});
 	}
