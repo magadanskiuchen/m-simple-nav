@@ -370,7 +370,12 @@ com.magadanski.mSimpleNav.MSimpleNav;
 		displayBearing;
 	
 	var tables = {
-		'locations': { id: { type: 'INTEGER', primaryKey: true, autoIncrement: true }, name: { type: 'TEXT' }, lat: { type: 'TEXT' }, lng: { type: 'TEXT' } }
+		'locations': {
+			id: { type: 'INTEGER', primaryKey: true, autoIncrement: true },
+			name: { type: 'TEXT' },
+			lat: { type: 'TEXT' },
+			lng: { type: 'TEXT' }
+		}
 	}
 	
 	// public properties
@@ -467,6 +472,8 @@ document.addEventListener('DOMContentLoaded', function (e) {
 		var ul = favoritesForm.querySelector('ul');
 		
 		app.getLocations(function (results) {
+			ul.innerHTML = '';
+			
 			for (var i = 0; i < results.rows.length; i++) {
 				var location = results.rows.item(i);
 				
@@ -481,6 +488,15 @@ document.addEventListener('DOMContentLoaded', function (e) {
 					'</li>';
 				
 				ul.innerHTML += liHtml;
+			}
+			
+			var anchors = ul.querySelectorAll('a');
+			for (var i in anchors) {
+				anchors.item(i).addEventListener('click', function (e) {
+						e.preventDefault();
+						
+						app.setDestination(e.currentTarget.dataset.locationLat, e.currentTarget.dataset.locationLng);
+				});
 			}
 		});
 	}
