@@ -20,9 +20,19 @@ com.magadanski.EventDispatcher;
 	
 	// public methods
 	EventDispatcher.prototype.addEventListener = function (eventType, callback) {
-		if (typeof(events[eventType]) == 'undefined') events[eventType] = [];
+		if (typeof(eventType.split) != 'undefined') {
+			eventType = eventType.split(',');
+		}
 		
-		events[eventType].push(callback);
+		for (var e in eventType) {
+			var eventName = eventType[e].replace(/\s/, '');
+			
+			if (typeof(events[eventName]) == 'undefined') {
+				events[eventName] = [];
+			}
+			
+			events[eventName].push(callback);
+		}
 	}
 	
 	EventDispatcher.prototype.dispatchEvent = function (eventType, eventObj) {
