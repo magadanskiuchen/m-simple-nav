@@ -14,6 +14,14 @@ com.magadanski.mSimpleNav.GPS;
 		}
 		
 		that.highAccuracy = !!enableHighAccuracy;
+		
+		that.addEventListener('locationChange, locationFault', function (e) {
+			setTimeout(function () {
+				// make new request no sooner than timeout AND next frame render
+				requestAnimationFrame(updateLocation);
+			}, timeout);
+		});
+		
 		updateLocation();
 	}
 	GPS.inherits(com.magadanski.EventDispatcher);
@@ -34,19 +42,13 @@ com.magadanski.mSimpleNav.GPS;
 				
 				that.dispatchEvent('locationChange', {
 					message: 'device location has changed',
-					lat: lat,
-					lng: lng
+					lat: location.lat(),
+					lng: location.lon()
 				});
-				
-				setTimeout(function () {
-					// make new request no sooner than timeout AND next frame render
-					requestAnimationFrame(updateLocation);
-				}, timeout);
 			}, function () {
-				setTimeout(function () {
-					// make new request no sooner than timeout AND next frame render
-					requestAnimationFrame(updateLocation);
-				}, timeout);
+				that.dispatchEvent('locationFault', {
+					message: 'no information on device location'
+				});
 			}, { enableHighAccuracy: !!that.highAccuracy });
 		}
 	}
