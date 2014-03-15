@@ -1,0 +1,23 @@
+CACHE MANIFEST
+# Cache manifest version 1.2
+
+CACHE:
+index.html
+style.css
+favicon.ico
+icons/touch-icon-iphone.png
+icons/touch-icon-ipad.png
+icons/touch-icon-iphone@2x.png
+icons/touch-icon-ipad@2x.png
+js/rAF.js
+js/geo.js
+js/latlng.js
+js/functions.js
+
+NETWORK:
+http://maps.googleapis.com/maps/api/
+http://maps.gstatic.com/
+http://csi.gstatic.com/
+
+# FALLBACK:
+# https://maps.googleapis.com/maps/api/js?v=3.14&amp;sensor=true
