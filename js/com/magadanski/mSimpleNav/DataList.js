@@ -6,8 +6,38 @@ com.magadanski.mSimpleNav.DataList;
 (function () {
 	// import Class
 	var that;
-	var DataList = function () {
+	var DataList = function (options) {
 		that = this;
+		
+		if (typeof(options) != 'object') {
+			options = {};
+		}
+		
+		if (typeof(options.startList) != 'function') {
+			options.startList = function () {
+				return '<ul>';
+			}
+		}
+		
+		if (typeof(options.endList) != 'function') {
+			options.endList = function () {
+				return '</ul>';
+			}
+		}
+		
+		if (typeof(options.renderItem) != 'function') {
+			options.renderItem = function (item) {
+				return '<li>' + item + '</li>';
+			}
+		}
+		
+		// priviledged properties
+		that.data = [];
+		
+		// priviledged methods
+		that.startList = options.startList;
+		that.endList = options.endList;
+		that.renderItem = options.renderItem;
 	}
 	DataList.inherits(com.magadanski.EventDispatcher);
 	com.magadanski.mSimpleNav.DataList = DataList;
@@ -19,5 +49,17 @@ com.magadanski.mSimpleNav.DataList;
 	// private methods
 	
 	// public methods
-	
+	DataList.prototype.render = function () {
+		var markup = '';
+		
+		markup += that.startList();
+		
+		for (var i in that.data) {
+			markup += that.renderItem(that.data[i]);
+		}
+		
+		markup += that.endList();
+		
+		return markup;
+	}
 })();
