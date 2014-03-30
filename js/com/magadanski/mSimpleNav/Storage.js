@@ -5,12 +5,11 @@ com.magadanski.mSimpleNav.Storage;
 //////////////////////////////////////
 (function () {
 	// import class
-	var that;
 	var Storage = function (tables) {
-		that = this;
+		var that = this;
 		
-		db = openDatabase('mSimpleNavFavorites', '1.0', 'M Simple Nav Favorites', 2*1024*1024);
-		db.transaction(function (tx) {
+		that.db = openDatabase('mSimpleNavFavorites', '1.0', 'M Simple Nav Favorites', 2*1024*1024);
+		that.db.transaction(function (tx) {
 			// database created callback
 			if (typeof(tables) != 'undefined') {
 				// cycle through all tables in object
@@ -61,9 +60,9 @@ com.magadanski.mSimpleNav.Storage;
 	com.magadanski.mSimpleNav.Storage = Storage;
 	
 	// private properties
-	var db;
 	
 	// public properties
+	Storage.prototype.db = null;
 	
 	// private methods
 	function getPlaceholder(values) {
@@ -72,7 +71,9 @@ com.magadanski.mSimpleNav.Storage;
 	
 	// public methods
 	Storage.prototype.add = function (table, entry, callback) {
-		db.transaction(function (tx) {
+		var that = this;
+		
+		that.db.transaction(function (tx) {
 			var fields = [];
 			var values = [];
 			
@@ -96,7 +97,9 @@ com.magadanski.mSimpleNav.Storage;
 	}
 	
 	Storage.prototype.get = function (table, options, callback) {
-		db.transaction(function (tx) {
+		var that = this;
+		
+		that.db.transaction(function (tx) {
 			var select = 'SELECT ';
 			var from = ' FROM ' + table;
 			var where = '';
