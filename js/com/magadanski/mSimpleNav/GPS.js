@@ -14,32 +14,21 @@ com.magadanski.mSimpleNav.GPS;
 		
 		that.highAccuracy = !!enableHighAccuracy;
 		
-		function updateLocation() {
-			if (navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition(function (position) {
-					that.location = new LatLon(position.coords.latitude, position.coords.longitude);
-					
-					that.dispatchEvent('locationChange', {
-						message: 'device location has changed',
-						lat: that.location.lat(),
-						lng: that.location.lon()
-					});
-				}, function () {
-					that.dispatchEvent('locationFault', {
-						message: 'no information on device location'
-					});
-				}, { enableHighAccuracy: !!that.highAccuracy });
-			}
+		if (navigator.geolocation) {
+			currentLocationTimeout = navigator.geolocation.watchPosition(function (position) {
+				that.location = new LatLon(position.coords.latitude, position.coords.longitude);
+				
+				that.dispatchEvent('locationChange', {
+					message: 'device location has changed',
+					lat: that.location.lat(),
+					lng: that.location.lon()
+				});
+			}, function () {
+				that.dispatchEvent('locationFault', {
+					message: 'no information on device location'
+				});
+			}, { enableHighAccuracy: !!that.highAccuracy });
 		}
-		
-		that.addEventListener('locationChange, locationFault', function (e) {
-			setTimeout(function () {
-				// make new request no sooner than timeout AND next frame render
-				requestAnimationFrame(updateLocation);
-			}, timeout);
-		});
-		
-		updateLocation();
 	}
 	GPS.inherits(com.magadanski.EventDispatcher);
 	com.magadanski.mSimpleNav.GPS = GPS;
