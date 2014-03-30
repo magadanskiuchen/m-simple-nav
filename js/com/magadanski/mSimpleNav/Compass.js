@@ -5,39 +5,38 @@ com.magadanski.mSimpleNav.Compass;
 //////////////////////////////////////
 (function () {
 	// import Class
-	var that;
 	var Compass = function () {
-		that = this;
+		var that = this;
 		
 		if (window.DeviceOrientationEvent) {
 			window.addEventListener('deviceorientation', function (e) {
 				if (e.absolute) {
-					compassHeading = -e.alpha;
+					that.compassHeading = -e.alpha;
 				} else if (typeof(e.webkitCompassHeading) != 'undefined') {
-					compassHeading = e.webkitCompassHeading;
+					that.compassHeading = e.webkitCompassHeading;
 				}
 				
-				tilt = e[tiltProperty] * tiltQuantifier;
+				that.tilt = e[that.tiltProperty] * that.tiltQuantifier;
 				
 				that.dispatchEvent('compassupdate', {
 					message: 'compass data has changed',
-					deviceBearing: compassHeading,
-					deviceTilt: tilt
+					deviceBearing: that.compassHeading,
+					deviceTilt: that.tilt
 				});
 			});
 		}
 		
 		window.addEventListener('orientationchange', function (e) {
 			if (window.orientation == 90 || window.orientation == -90) {
-				tiltProperty = 'gamma';
+				that.tiltProperty = 'gamma';
 			} else {
-				tiltProperty = 'beta';
+				that.tiltProperty = 'beta';
 			}
 			
 			if (window.orientation > 0) {
-				tiltQuantifier = -1;
+				that.tiltQuantifier = -1;
 			} else {
-				tiltQuantifier = 1;
+				that.tiltQuantifier = 1;
 			}
 		});
 	}
@@ -45,21 +44,25 @@ com.magadanski.mSimpleNav.Compass;
 	com.magadanski.mSimpleNav.Compass = Compass;
 	
 	// private properties
-	var compassHeading = 0,
-		tilt = 0,
-		tiltProperty = 'beta',
-		tiltQuantifier = 1;
 	
 	// public properties
+	Compass.prototype.compassHeading = 0;
+	Compass.prototype.tilt = 0;
+	Compass.prototype.tiltProperty = 'beta';
+	Compass.prototype.tiltQuantifier = 1;
 	
 	// private methods
 	
 	// public methods
 	Compass.prototype.getDeviceBearing = function () {
-		return compassHeading;
+		var that = this;
+		
+		return that.compassHeading;
 	}
 	
 	Compass.prototype.getDeviceTilt = function () {
-		return tilt;
+		var that = this;
+		
+		return that.tilt;
 	}
 })();
