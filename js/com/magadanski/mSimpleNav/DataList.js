@@ -5,9 +5,8 @@ com.magadanski.mSimpleNav.DataList;
 //////////////////////////////////////
 (function () {
 	// import Class
-	var that;
 	var DataList = function (options) {
-		that = this;
+		var that = this;
 		
 		if (typeof(options) != 'object') {
 			options = {};
@@ -50,6 +49,7 @@ com.magadanski.mSimpleNav.DataList;
 	
 	// public methods
 	DataList.prototype.render = function () {
+		var that = this;
 		var markup = '';
 		
 		markup += that.startList();
