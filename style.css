@@ -40,8 +40,7 @@ input[type="text"] {
 
 #favorites-form ul {
 	list-style-type: none;
-	margin-left: 0;
-	margin-right: 0;
+	margin: 0 0 10px;
 	border: 1px solid #CCC;
 	background: #FFF;
 	font-size: 16px;
@@ -125,7 +124,7 @@ input[type="text"] {
 	-webkit-transform: rotateZ(-22.62deg) rotateX(12deg) rotateY(30deg) translate(26px, 26px);
 }
 
-.tab-preview { display: none; }
+.tab-preview { display: none; margin-top: -55px; padding-top: 55px; }
 .tab-preview:target { display: block; }
 
 #distance { font-size: 24px; text-align: center; }
