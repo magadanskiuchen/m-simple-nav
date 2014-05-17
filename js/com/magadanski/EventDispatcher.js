@@ -12,14 +12,16 @@ com.magadanski.EventDispatcher;
 	com.magadanski.EventDispatcher = EventDispatcher;
 	
 	// private properties
-	var events = {};
 	
 	// public properties
+	EventDispatcher.prototype.events = {};
 	
 	// private methods
 	
 	// public methods
 	EventDispatcher.prototype.addEventListener = function (eventType, callback) {
+		var that = this;
+		
 		if (typeof(eventType.split) != 'undefined') {
 			eventType = eventType.split(',');
 		}
@@ -27,26 +29,28 @@ com.magadanski.EventDispatcher;
 		for (var e in eventType) {
 			var eventName = eventType[e].replace(/\s/, '');
 			
-			if (typeof(events[eventName]) == 'undefined') {
-				events[eventName] = [];
+			if (typeof(that.events[eventName]) == 'undefined') {
+				that.events[eventName] = [];
 			}
 			
-			events[eventName].push(callback);
+			that.events[eventName].push(callback);
 		}
 	}
 	
 	EventDispatcher.prototype.dispatchEvent = function (eventType, eventObj) {
+		var that = this;
+		
 		if (typeof(eventObj) == 'undefined') {
 			eventObj = {};
 		}
 		
-		if (typeof(events[eventType]) == 'object') {
-			for (var callback in events[eventType]) {
+		if (typeof(that.events[eventType]) == 'object') {
+			for (var callback in that.events[eventType]) {
 				eventObj.type = eventType;
 				eventObj.currentTarget = this;
 				
-				if (typeof(events[eventType][callback]) == 'function') {
-					events[eventType][callback](eventObj);
+				if (typeof(that.events[eventType][callback]) == 'function') {
+					that.events[eventType][callback](eventObj);
 				}
 			}
 		}

@@ -5,9 +5,8 @@ com.magadanski.mSimpleNav.GPS;
 //////////////////////////////////////
 (function () {
 	// import class
-	var that;
 	var GPS = function (enableHighAccuracy) {
-		that = this;
+		var that = this;
 		
 		if (typeof(enableHighAccuracy) == 'undefined') {
 			enableHighAccuracy = true;
@@ -15,60 +14,52 @@ com.magadanski.mSimpleNav.GPS;
 		
 		that.highAccuracy = !!enableHighAccuracy;
 		
-		that.addEventListener('locationChange, locationFault', function (e) {
-			setTimeout(function () {
-				// make new request no sooner than timeout AND next frame render
-				requestAnimationFrame(updateLocation);
-			}, timeout);
-		});
-		
-		updateLocation();
+		if (navigator.geolocation) {
+			currentLocationTimeout = navigator.geolocation.watchPosition(function (position) {
+				that.position = new LatLon(position.coords.latitude, position.coords.longitude);
+				
+				that.dispatchEvent('positionChange', {
+					message: 'device position has changed',
+					lat: that.position.lat(),
+					lng: that.position.lon()
+				});
+			}, function () {
+				that.dispatchEvent('positionFault', {
+					message: 'no information on device position'
+				});
+			}, { enableHighAccuracy: !!that.highAccuracy });
+		}
 	}
 	GPS.inherits(com.magadanski.EventDispatcher);
 	com.magadanski.mSimpleNav.GPS = GPS;
 	
 	// private properties
-	var location,
-		timeout = 2000;
+	var timeout = 2000;
 	
 	// public properties
+	GPS.prototype.position = null;
 	GPS.prototype.highAccuracy = true;
 	
 	// private methods
-	function updateLocation() {
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(function (position) {
-				location = new LatLon(position.coords.latitude, position.coords.longitude);
-				
-				that.dispatchEvent('locationChange', {
-					message: 'device location has changed',
-					lat: location.lat(),
-					lng: location.lon()
-				});
-			}, function () {
-				that.dispatchEvent('locationFault', {
-					message: 'no information on device location'
-				});
-			}, { enableHighAccuracy: !!that.highAccuracy });
-		}
-	}
 	
 	// public methods
 	GPS.prototype.getDistanceTo = function (destination) {
+		var that = this;
 		var distance = '';
 		
-		if (location instanceof LatLon && destination instanceof LatLon) {
-			distance = location.distanceTo(destination);
+		if (that.position instanceof LatLon && destination instanceof LatLon) {
+			distance = that.position.distanceTo(destination);
 		}
 		
 		return distance;
 	}
 	
 	GPS.prototype.getBearingTo = function (destination) {
+		var that = this;
 		var bearing = 0;
 		
-		if (location instanceof LatLon && destination instanceof LatLon) {
-			bearing = location.bearingTo(destination);
+		if (that.position instanceof LatLon && destination instanceof LatLon) {
+			bearing = that.position.bearingTo(destination);
 		}
 		
 		return bearing;

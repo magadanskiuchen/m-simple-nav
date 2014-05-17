@@ -5,9 +5,8 @@ com.magadanski.mSimpleNav.MSimpleNav;
 //////////////////////////////////////
 (function () {
 	// import class
-	var that;
 	var MSimpleNav = function () {
-		that = this;
+		var that = this;
 		
 		geocoder = new google.maps.Geocoder();
 		gps = new com.magadanski.mSimpleNav.GPS(true);
