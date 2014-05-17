@@ -12,6 +12,6 @@ com.magadanski.mSimpleNav.LocationsDataList;
 			return '<li><a href="#">' + item.name + '</a></li>';
 		}
 	}
-	LocationsDataList.inherits(DataList);
+	LocationsDataList.inherits(com.magadanski.mSimpleNav.DataList);
 	com.magadanski.mSimpleNav.LocationsDataList = LocationsDataList;
 })();
