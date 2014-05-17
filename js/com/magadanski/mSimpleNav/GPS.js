@@ -16,16 +16,16 @@ com.magadanski.mSimpleNav.GPS;
 		
 		if (navigator.geolocation) {
 			currentLocationTimeout = navigator.geolocation.watchPosition(function (position) {
-				that.location = new LatLon(position.coords.latitude, position.coords.longitude);
+				that.position = new LatLon(position.coords.latitude, position.coords.longitude);
 				
-				that.dispatchEvent('locationChange', {
-					message: 'device location has changed',
-					lat: that.location.lat(),
-					lng: that.location.lon()
+				that.dispatchEvent('positionChange', {
+					message: 'device position has changed',
+					lat: that.position.lat(),
+					lng: that.position.lon()
 				});
 			}, function () {
-				that.dispatchEvent('locationFault', {
-					message: 'no information on device location'
+				that.dispatchEvent('positionFault', {
+					message: 'no information on device position'
 				});
 			}, { enableHighAccuracy: !!that.highAccuracy });
 		}
@@ -37,7 +37,7 @@ com.magadanski.mSimpleNav.GPS;
 	var timeout = 2000;
 	
 	// public properties
-	GPS.prototype.location = null;
+	GPS.prototype.position = null;
 	GPS.prototype.highAccuracy = true;
 	
 	// private methods
@@ -47,8 +47,8 @@ com.magadanski.mSimpleNav.GPS;
 		var that = this;
 		var distance = '';
 		
-		if (that.location instanceof LatLon && destination instanceof LatLon) {
-			distance = that.location.distanceTo(destination);
+		if (that.position instanceof LatLon && destination instanceof LatLon) {
+			distance = that.position.distanceTo(destination);
 		}
 		
 		return distance;
@@ -58,8 +58,8 @@ com.magadanski.mSimpleNav.GPS;
 		var that = this;
 		var bearing = 0;
 		
-		if (that.location instanceof LatLon && destination instanceof LatLon) {
-			bearing = that.location.bearingTo(destination);
+		if (that.position instanceof LatLon && destination instanceof LatLon) {
+			bearing = that.position.bearingTo(destination);
 		}
 		
 		return bearing;

@@ -134,4 +134,6 @@ com.magadanski.mSimpleNav.Storage;
 			});
 		});
 	}
+	
+	// TODO: add UPDATE and DELETE capabilities
 })();
