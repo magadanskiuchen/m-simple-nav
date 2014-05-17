@@ -8,6 +8,11 @@ com.magadanski.mSimpleNav.DataList;
 	var DataList = function (options) {
 		var that = this;
 		
+		// private properties
+		
+		// private methods
+		
+		// constructor
 		if (typeof(options) != 'object') {
 			options = {};
 		}
@@ -41,11 +46,7 @@ com.magadanski.mSimpleNav.DataList;
 	DataList.inherits(com.magadanski.EventDispatcher);
 	com.magadanski.mSimpleNav.DataList = DataList;
 	
-	// private properties
-	
 	// public properties
-	
-	// private methods
 	
 	// public methods
 	DataList.prototype.render = function () {

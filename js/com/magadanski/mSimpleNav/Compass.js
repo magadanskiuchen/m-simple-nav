@@ -8,6 +8,11 @@ com.magadanski.mSimpleNav.Compass;
 	var Compass = function () {
 		var that = this;
 		
+		// private properties
+		
+		// private methods
+		
+		// constructor
 		if (window.DeviceOrientationEvent) {
 			window.addEventListener('deviceorientation', function (e) {
 				if (e.absolute) {
@@ -43,15 +48,11 @@ com.magadanski.mSimpleNav.Compass;
 	Compass.inherits(com.magadanski.EventDispatcher);
 	com.magadanski.mSimpleNav.Compass = Compass;
 	
-	// private properties
-	
 	// public properties
 	Compass.prototype.compassHeading = 0;
 	Compass.prototype.tilt = 0;
 	Compass.prototype.tiltProperty = 'beta';
 	Compass.prototype.tiltQuantifier = 1;
-	
-	// private methods
 	
 	// public methods
 	Compass.prototype.getDeviceBearing = function () {
