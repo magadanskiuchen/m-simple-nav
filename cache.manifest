@@ -9,19 +9,7 @@ icons/touch-icon-iphone.png
 icons/touch-icon-ipad.png
 icons/touch-icon-iphone@2x.png
 icons/touch-icon-ipad@2x.png
-js/rAF.js
-js/geo.js
-js/latlng.js
-js/com/magadanski/core.js
-js/com/magadanski/EventDispatcher.js
-js/com/magadanski/mSimpleNav/Location.js
-js/com/magadanski/mSimpleNav/GPS.js
-js/com/magadanski/mSimpleNav/Compass.js
-js/com/magadanski/mSimpleNav/Storage.js
-js/com/magadanski/mSimpleNav/DataList.js
-js/com/magadanski/mSimpleNav/LocationsDataList.js
-js/com/magadanski/mSimpleNav/MSimpleNav.js
-js/functions.js
+js/combined.min.js
 
 NETWORK:
 http://maps.googleapis.com/maps/api/
