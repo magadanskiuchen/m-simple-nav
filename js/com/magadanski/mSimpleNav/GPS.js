@@ -8,6 +8,11 @@ com.magadanski.mSimpleNav.GPS;
 	var GPS = function (enableHighAccuracy) {
 		var that = this;
 		
+		// private properties
+		
+		// private methods
+		
+		// constructor
 		if (typeof(enableHighAccuracy) == 'undefined') {
 			enableHighAccuracy = true;
 		}
@@ -33,14 +38,9 @@ com.magadanski.mSimpleNav.GPS;
 	GPS.inherits(com.magadanski.EventDispatcher);
 	com.magadanski.mSimpleNav.GPS = GPS;
 	
-	// private properties
-	var timeout = 2000;
-	
 	// public properties
 	GPS.prototype.position = null;
 	GPS.prototype.highAccuracy = true;
-	
-	// private methods
 	
 	// public methods
 	GPS.prototype.getDistanceTo = function (destination) {

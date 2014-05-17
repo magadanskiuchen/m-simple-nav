@@ -8,6 +8,11 @@ com.magadanski.mSimpleNav.Storage;
 	var Storage = function (tables) {
 		var that = this;
 		
+		// private properties
+		
+		// private methods
+		
+		// constructor
 		that.db = openDatabase('mSimpleNavFavorites', '1.0', 'M Simple Nav Favorites', 2*1024*1024);
 		that.db.transaction(function (tx) {
 			// database created callback
@@ -59,15 +64,13 @@ com.magadanski.mSimpleNav.Storage;
 	Storage.inherits(com.magadanski.EventDispatcher);
 	com.magadanski.mSimpleNav.Storage = Storage;
 	
-	// private properties
-	
-	// public properties
-	Storage.prototype.db = null;
-	
-	// private methods
+	// helper functions
 	function getPlaceholder(values) {
 		return Array(values.length + 1).join('?').split('').join(', ');
 	}
+	
+	// public properties
+	Storage.prototype.db = null;
 	
 	// public methods
 	Storage.prototype.add = function (table, entry, callback) {
