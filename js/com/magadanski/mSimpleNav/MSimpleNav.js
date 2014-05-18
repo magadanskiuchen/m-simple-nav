@@ -9,10 +9,6 @@ com.magadanski.mSimpleNav.MSimpleNav;
 		var that = this;
 		
 		// private properties
-		var gps;
-		var compass;
-		var displayBearing;
-		
 		var tables = {
 			'locations': {
 				id: { type: 'INTEGER', primaryKey: true, autoIncrement: true },
@@ -24,16 +20,16 @@ com.magadanski.mSimpleNav.MSimpleNav;
 		
 		// private methods
 		function render() {
-			var newBearing = gps.getBearingTo(destination) - compass.getDeviceBearing();
+			var newBearing = that.gps.getBearingTo(that.destination) - that.compass.getDeviceBearing();
 			
-			if ( Math.abs( displayBearing - newBearing ) < Math.abs( 360 + displayBearing - newBearing ) ) {
-				displayBearing = newBearing;
+			if ( Math.abs( that.displayBearing - newBearing ) < Math.abs( 360 + that.displayBearing - newBearing ) ) {
+				that.displayBearing = newBearing;
 			} else {
-				displayBearing = newBearing - 360;
+				that.displayBearing = newBearing - 360;
 			}
 			
-			document.getElementById('distance').innerText = gps.getDistanceTo(destination) + ' km';
-			document.getElementById('compass').style.webkitTransform = 'rotateX(' + compass.getDeviceTilt() + 'deg) rotateZ(' + displayBearing + 'deg)';
+			document.getElementById('distance').innerText = that.gps.getDistanceTo(that.destination) + ' km';
+			document.getElementById('compass').style.webkitTransform = 'rotateX(' + that.compass.getDeviceTilt() + 'deg) rotateZ(' + that.displayBearing + 'deg)';
 			
 			requestAnimationFrame(render);
 		}
@@ -67,11 +63,33 @@ com.magadanski.mSimpleNav.MSimpleNav;
 			}
 		}
 		
+		// priviledged properties
+		that.gps;
+		that.compass;
+		that.displayBearing;
+		that.destination;
+		that.geocoder;
+		that.storage;
+		that.favoriteLocations;
+		
+		// priviledged methods
+		
 		// constructor
-		geocoder = new google.maps.Geocoder();
-		gps = new com.magadanski.mSimpleNav.GPS(true);
-		compass = new com.magadanski.mSimpleNav.Compass();
-		storage = new com.magadanski.mSimpleNav.Storage(tables);
+		that.geocoder = new google.maps.Geocoder();
+		that.gps = new com.magadanski.mSimpleNav.GPS(true);
+		that.compass = new com.magadanski.mSimpleNav.Compass();
+		that.storage = new com.magadanski.mSimpleNav.Storage(tables);
+		that.favoriteLocations = new com.magadanski.mSimpleNav.LocationsDataList();
+		
+		that.getLocations(function (results) {
+			var newData = [];
+			
+			for (var i = 0; i < results.rows.length; i++) {
+				newData.push(results.rows.item(i));
+			}
+			
+			that.favoriteLocations.setData(newData);
+		});
 		
 		that.addEventListener('geocoded', onGeocoded);
 		
@@ -79,13 +97,6 @@ com.magadanski.mSimpleNav.MSimpleNav;
 	}
 	MSimpleNav.inherits(com.magadanski.EventDispatcher);
 	com.magadanski.mSimpleNav.MSimpleNav = MSimpleNav;
-	
-	// helper properties
-	var destination;
-	var geocoder;
-	var storage;
-	
-	// public properties
 	
 	// public methods
 	MSimpleNav.prototype.setDestination = function (lat, lng) {
@@ -97,7 +108,7 @@ com.magadanski.mSimpleNav.MSimpleNav;
 		while (lng > 180) { lng -= 360; }
 		while (lng < -180) { lat += 360; }
 		
-		destination = new LatLon(lat, lng);
+		that.destination = new LatLon(lat, lng);
 		
 		that.dispatchEvent('destinationChange', {
 			message: 'destination has changed',
@@ -110,7 +121,7 @@ com.magadanski.mSimpleNav.MSimpleNav;
 		var that = this;
 		
 		// TODO: i18n
-		geocoder.geocode({ address: address }, function (result, status) {
+		that.geocoder.geocode({ address: address }, function (result, status) {
 			that.dispatchEvent('geocoded', { result: result, status: status });
 		});
 	}
@@ -120,12 +131,14 @@ com.magadanski.mSimpleNav.MSimpleNav;
 		
 		var location = { name: name, lat: lat, lng: lng };
 		
-		storage.add('locations', location, function (tx, results) {
+		that.storage.add('locations', location, function (tx, results) {
 			that.dispatchEvent('locationsUpdated', { results: results });
 		});
 	}
 	
 	MSimpleNav.prototype.getLocations = function (callback) {
-		storage.get('locations', {}, callback);
+		var that = this;
+		
+		that.storage.get('locations', {}, callback);
 	}
 })();
