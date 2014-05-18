@@ -70,6 +70,7 @@ com.magadanski.mSimpleNav.MSimpleNav;
 		that.destination;
 		that.geocoder;
 		that.storage;
+		that.favoriteLocations;
 		
 		// priviledged methods
 		
@@ -78,6 +79,17 @@ com.magadanski.mSimpleNav.MSimpleNav;
 		that.gps = new com.magadanski.mSimpleNav.GPS(true);
 		that.compass = new com.magadanski.mSimpleNav.Compass();
 		that.storage = new com.magadanski.mSimpleNav.Storage(tables);
+		that.favoriteLocations = new com.magadanski.mSimpleNav.LocationsDataList();
+		
+		that.getLocations(function (results) {
+			var newData = [];
+			
+			for (var i = 0; i < results.rows.length; i++) {
+				newData.push(results.rows.item(i));
+			}
+			
+			that.favoriteLocations.setData(newData);
+		});
 		
 		that.addEventListener('geocoded', onGeocoded);
 		
@@ -125,6 +137,8 @@ com.magadanski.mSimpleNav.MSimpleNav;
 	}
 	
 	MSimpleNav.prototype.getLocations = function (callback) {
+		var that = this;
+		
 		that.storage.get('locations', {}, callback);
 	}
 })();

@@ -9,7 +9,7 @@ com.magadanski.mSimpleNav.LocationsDataList;
 		var that = this;
 		
 		that.renderItem = function (item) {
-			return '<li><a href="#">' + item.name + '</a></li>';
+			return '<li><a href="#" data-location-id="' + item.id + '" data-location-lat="' + item.lat + '" data-location-lng="' + item.lng + '">' + item.name + '</a></li>';
 		}
 	}
 	LocationsDataList.inherits(com.magadanski.mSimpleNav.DataList);
