@@ -36,6 +36,7 @@ com.magadanski.mSimpleNav.MSimpleNav;
 		
 		function onGeocoded(e) {
 			switch (e.status) {
+				// TODO: i18n
 				case google.maps.GeocoderStatus.OK:
 					// Bookmark address capabilities
 					var location = e.result[0].geometry.location;
@@ -120,7 +121,6 @@ com.magadanski.mSimpleNav.MSimpleNav;
 	MSimpleNav.prototype.geocode = function (address) {
 		var that = this;
 		
-		// TODO: i18n
 		that.geocoder.geocode({ address: address }, function (result, status) {
 			that.dispatchEvent('geocoded', { result: result, status: status });
 		});

@@ -72,7 +72,7 @@ com.magadanski.mSimpleNav.DataList;
 				if (typeof(data[i]) !== 'undefined') {
 					data[i] = null;
 				} else {
-					// TODO: trigger error
+					throw new com.magadanski.Exception('index ' + i + ' does not exist in data array');
 				}
 			} else {
 				data = [];
