@@ -36,7 +36,6 @@ com.magadanski.mSimpleNav.MSimpleNav;
 		
 		function onGeocoded(e) {
 			switch (e.status) {
-				// TODO: i18n
 				case google.maps.GeocoderStatus.OK:
 					// Bookmark address capabilities
 					var location = e.result[0].geometry.location;
@@ -44,22 +43,22 @@ com.magadanski.mSimpleNav.MSimpleNav;
 					that.setDestination(location.lat(), location.lng());
 					break;
 				case google.maps.GeocoderStatus.ERROR:
-					alert('Cannot get coordinates for location. Check your internet connection.');
+					alert(i18n.geocode_error);
 					break;
 				case google.maps.GeocoderStatus.INVALID_REQUEST:
-					alert('Contact the developer and let them know that an invalid request error occured.');
+					alert(i18n.geocode_invalid_request);
 					break;
 				case google.maps.GeocoderStatus.OVER_QUERY_LIMIT:
-					alert('You have made too many queries for too short time. Try again in 10 minutes.');
+					alert(i18n.geocode_over_query_limit);
 					break;
 				case google.maps.GeocoderStatus.REQUEST_DENIED:
-					alert('Contact the developer and let them know that a request denied error occured.');
+					alert(i18n.geocode_request_denied);
 					break;
 				case google.maps.GeocoderStatus.UNKNOWN_ERROR:
-					alert('Ooops, we could not find what you were looking for. Please try again.');
+					alert(i18n.geocode_unknown_error);
 					break;
 				case google.maps.GeocoderStatus.ZERO_RESULTS:
-					alert('No results were found for that address. Please try modifying that and searching again.');
+					alert(i18n.geocode_zero_results);
 					break;
 			}
 		}
