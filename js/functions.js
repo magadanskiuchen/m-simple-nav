@@ -13,11 +13,9 @@ document.addEventListener('DOMContentLoaded', function (e) {
 	addressForm.addEventListener('submit', function (e) {
 		e.preventDefault();
 		
-		app.addEventListener('geocoded', function (e) {
-			var location = e.result[0].geometry.location;
-			
-			document.getElementById('lat').value = location.lat();
-			document.getElementById('lng').value = location.lng();
+		app.addEventListener('destinationChange', function (e) {
+			document.getElementById('lat').value = e.lat;
+			document.getElementById('lng').value = e.lng;
 		});
 		
 		app.geocode(document.getElementById('address').value);
@@ -55,8 +53,8 @@ document.addEventListener('DOMContentLoaded', function (e) {
 		}
 	});
 	
-	// stupid iOS7
-	if (navigator.userAgent.match(/CPU\sOS\s7_/)) {
+	// stupid iOS7 and iOS8
+	if (navigator.userAgent.match(/CPU\sOS\s[7,8]_/)) {
 		document.body.style.paddingTop = '24px';
 	}
 });
