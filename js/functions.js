@@ -55,8 +55,8 @@ document.addEventListener('DOMContentLoaded', function (e) {
 		}
 	});
 	
-	// stupid iOS7
-	if (navigator.userAgent.match(/CPU\sOS\s7_/)) {
+	// stupid iOS7 and iOS8
+	if (navigator.userAgent.match(/CPU\sOS\s[7,8]_/)) {
 		document.body.style.paddingTop = '24px';
 	}
 });
