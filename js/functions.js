@@ -13,11 +13,9 @@ document.addEventListener('DOMContentLoaded', function (e) {
 	addressForm.addEventListener('submit', function (e) {
 		e.preventDefault();
 		
-		app.addEventListener('geocoded', function (e) {
-			var location = e.result[0].geometry.location;
-			
-			document.getElementById('lat').value = location.lat();
-			document.getElementById('lng').value = location.lng();
+		app.addEventListener('destinationChange', function (e) {
+			document.getElementById('lat').value = e.lat;
+			document.getElementById('lng').value = e.lng;
 		});
 		
 		app.geocode(document.getElementById('address').value);

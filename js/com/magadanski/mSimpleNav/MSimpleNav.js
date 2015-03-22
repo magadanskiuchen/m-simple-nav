@@ -63,6 +63,20 @@ com.magadanski.mSimpleNav.MSimpleNav;
 			}
 		}
 		
+		function onLocationsLoaded(results) {
+			var newData = [];
+			
+			for (var i = 0; i < results.rows.length; i++) {
+				newData.push(results.rows.item(i));
+			}
+			
+			that.favoriteLocations.setData(newData);
+		}
+		
+		function onLocationsUpdated(e) {
+			that.getLocations(onLocationsLoaded);
+		}
+		
 		// priviledged properties
 		that.gps;
 		that.compass;
@@ -81,17 +95,10 @@ com.magadanski.mSimpleNav.MSimpleNav;
 		that.storage = new com.magadanski.mSimpleNav.Storage(tables);
 		that.favoriteLocations = new com.magadanski.mSimpleNav.LocationsDataList();
 		
-		that.getLocations(function (results) {
-			var newData = [];
-			
-			for (var i = 0; i < results.rows.length; i++) {
-				newData.push(results.rows.item(i));
-			}
-			
-			that.favoriteLocations.setData(newData);
-		});
-		
 		that.addEventListener('geocoded', onGeocoded);
+		that.addEventListener('locationsUpdated', onLocationsUpdated);
+		
+		that.getLocations(onLocationsLoaded);
 		
 		render();
 	}
