@@ -5,6 +5,10 @@ document.addEventListener('DOMContentLoaded', function (e) {
 	var coordinatesForm = document.getElementById('coordinates-form');
 	var favoritesForm = document.getElementById('favorites-form');
 	
+	if (window.location.hash.length > 0) {
+		navigation.goTo(window.location.hash);
+	}
+	
 	coordinatesForm.addEventListener('submit', function (e) {
 		e.preventDefault();
 		

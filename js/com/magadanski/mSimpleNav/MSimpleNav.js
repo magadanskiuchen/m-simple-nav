@@ -5,6 +5,7 @@ com.magadanski.mSimpleNav.MSimpleNav;
 //////////////////////////////////////
 (function () {
 	// import class
+	var that;
 	var MSimpleNav = function () {
 		var that = this;
 		

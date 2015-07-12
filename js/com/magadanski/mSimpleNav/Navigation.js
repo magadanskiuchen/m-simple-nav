@@ -5,6 +5,7 @@ com.magadanski.mSimpleNav.Navigation;
 //////////////////////////////////////
 (function () {
 	// import class
+	var that;
 	var Navigation = function (containerSelector) {
 		var that = this;
 		
@@ -31,4 +32,11 @@ com.magadanski.mSimpleNav.Navigation;
 	com.magadanski.mSimpleNav.Navigation = Navigation;
 	
 	// public methods
+	Navigation.prototype.goTo = function (address) {
+		var link = this.container.querySelector('a[href="' + address + '"]');
+		
+		if (link.getAttribute('href') == address || link.href == address) {
+			link.dispatchEvent(new Event('click'));
+		}
+	}
 })();

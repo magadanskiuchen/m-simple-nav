@@ -50,13 +50,13 @@
 		</ul>
 		
 		<form id="address-form" class="tab-preview">
-			<input type="text" id="address" name="address" placeholder="Address" />
+			<input type="text" id="address" name="address" class="medium" placeholder="Address" />
 			<input type="submit" name="search_by_address" value="Search" />
 		</form>
 		
 		<form id="coordinates-form" class="tab-preview">
-			<input type="text" id="lat" name="lat" class="lat" placeholder="Latitude" />
-			<input type="text" id="lng" name="lng" class="lng" placeholder="Longitude" />
+			<input type="number" id="lat" name="lat" class="small lat" placeholder="Latitude" min="-90" max="90" />
+			<input type="number" id="lng" name="lng" class="small lng" placeholder="Longitude" />
 			<input type="submit" name="search_by_coordinates" value="Search" />
 		</form>
 		
