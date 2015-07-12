@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function (e) {
 	var app = new com.magadanski.mSimpleNav.MSimpleNav();
+	var navigation = new com.magadanski.mSimpleNav.Navigation('.tabs');
 	var addressForm = document.getElementById('address-form');
 	var coordinatesForm = document.getElementById('coordinates-form');
 	var favoritesForm = document.getElementById('favorites-form');

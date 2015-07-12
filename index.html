@@ -14,6 +14,8 @@
 	<link rel="apple-touch-icon" sizes="76x76" href="icons/touch-icon-ipad.png" />
 	<link rel="apple-touch-icon" sizes="120x120" href="icons/touch-icon-iphone@2x.png" />
 	<link rel="apple-touch-icon" sizes="152x152" href="icons/touch-icon-ipad@2x.png" />
+	
+	<link href="//fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" type="text/css" href="style.css" />
 	
 	<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?v=3.14&amp;sensor=true"></script>
@@ -27,12 +29,14 @@
 	<script type="text/javascript" src="js/com/magadanski/core.js"></script>
 	<script type="text/javascript" src="js/com/magadanski/EventDispatcher.js"></script>
 	<script type="text/javascript" src="js/com/magadanski/Exception.js"></script>
+	<script type="text/javascript" src="js/com/magadanski/DOMCollection.js"></script>
 	<script type="text/javascript" src="js/com/magadanski/mSimpleNav/Location.js"></script>
 	<script type="text/javascript" src="js/com/magadanski/mSimpleNav/GPS.js"></script>
 	<script type="text/javascript" src="js/com/magadanski/mSimpleNav/Compass.js"></script>
 	<script type="text/javascript" src="js/com/magadanski/mSimpleNav/Storage.js"></script>
 	<script type="text/javascript" src="js/com/magadanski/mSimpleNav/DataList.js"></script>
 	<script type="text/javascript" src="js/com/magadanski/mSimpleNav/LocationsDataList.js"></script>
+	<script type="text/javascript" src="js/com/magadanski/mSimpleNav/Navigation.js"></script>
 	<script type="text/javascript" src="js/com/magadanski/mSimpleNav/MSimpleNav.js"></script>
 	
 	<script type="text/javascript" src="js/functions.js"></script>
@@ -40,9 +44,9 @@
 <body>
 	<div id="input">
 		<ul class="tabs">
-			<li><a href="#address-form">Address</a></li>
-			<li><a href="#coordinates-form">Coordinates</a></li>
-			<li><a href="#favorites-form">Favorites</a></li>
+			<li><a class="icon msn-search" href="#address-form">Address</a></li>
+			<li><a class="icon msn-location" href="#coordinates-form">Coordinates</a></li>
+			<li><a class="icon msn-heart" href="#favorites-form">Favorites</a></li>
 		</ul>
 		
 		<form id="address-form" class="tab-preview">
