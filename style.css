@@ -21,13 +21,14 @@ a:hover, a:focus, a:active { color: #0F0F99; text-decoration: underline; }
 .msn-search:before { content: "\e601"; }
 .msn-heart:before { content: "\e602"; }
 
-.tabs { list-style-type: none; }
-.tabs li { display: inline-block; width: 32.65%; }
-.tabs a { display: inline-block; padding: 10px; width: 100%; color: #667FCC; text-align: center; text-decoration: none; font-size: 0; }
+.tabs { list-style-type: none; font-size: 0; }
+.tabs li { display: inline-block; width: 33.33%; background: #667FCC; transition: background 200ms ease; }
+.tabs a { display: block; margin: 0 auto; padding: 15px 10px; width: 36px; overflow: hidden; color: #FFF; font-size: 14px; text-align: center; text-decoration: none; transition: color 200ms ease, width 500ms ease; }
+.tabs a:before { padding-right: 5px; font-size: 24px; line-height: 14px; vertical-align: sub; }
+.tabs .active { background: #FFF; }
 .tabs .active a,
 .tabs a:hover,
-.tabs a:focus { color: #CB6D4D; }
-.tabs a:before { font-size: 14px; }
+.tabs a:focus { width: 100%; color: #667FCC; }
 
 input[type="button"],
 input[type="submit"] {
@@ -94,7 +95,7 @@ input[type="text"] {
 	-webkit-perspective: 200px;
 	-webkit-transform-style: preserve-3d;
 	-webkit-transform: rotateX(0deg) rotateZ(0deg);
-	transition: all 0.3s ease;
+	transition: transform 0.3s ease;
 }
 
 #compass span {
