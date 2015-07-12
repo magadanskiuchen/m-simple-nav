@@ -37,6 +37,26 @@ com.magadanski.EventDispatcher;
 		}
 	}
 	
+	EventDispatcher.prototype.removeEventListener = function (eventType, callback) {
+		var that = this;
+		
+		if (typeof(eventType.split) != 'undefined') {
+			eventType = eventType.split(',');
+		}
+		
+		for (var e in eventType) {
+			var eventName = eventType[e].replace(/\s/, '');
+			
+			if (typeof(that.events[eventName]) != 'undedined') {
+				for (var c in that.events[eventName]) {
+					if (c == callback || that.events[eventName][c] == callback) {
+						that.events[eventName].splice(c, 1);
+					}
+				}
+			}
+		}
+	}
+	
 	EventDispatcher.prototype.dispatchEvent = function (eventType, eventObj) {
 		var that = this;
 		
