@@ -1,8 +1,13 @@
 document.addEventListener('DOMContentLoaded', function (e) {
 	var app = new com.magadanski.mSimpleNav.MSimpleNav();
+	var navigation = new com.magadanski.mSimpleNav.Navigation('.tabs');
 	var addressForm = document.getElementById('address-form');
 	var coordinatesForm = document.getElementById('coordinates-form');
 	var favoritesForm = document.getElementById('favorites-form');
+	
+	if (window.location.hash.length > 0) {
+		navigation.goTo(window.location.hash);
+	}
 	
 	coordinatesForm.addEventListener('submit', function (e) {
 		e.preventDefault();
