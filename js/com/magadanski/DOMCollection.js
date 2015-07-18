@@ -53,4 +53,10 @@ com.magadanski.DOMCollection;
 			this.elements[e].classList.remove(className);
 		}
 	}
+	
+	DOMCollection.prototype.each = function (callback) {
+		for (e in this.elements) {
+			callback(e, this.elements[e]);
+		}
+	}
 })();
