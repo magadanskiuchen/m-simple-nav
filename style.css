@@ -21,7 +21,7 @@ a:hover, a:focus, a:active { color: #0F0F99; text-decoration: underline; }
 .msn-search:before { content: "\e601"; }
 .msn-heart:before { content: "\e602"; }
 
-.tabs { list-style-type: none; font-size: 0; }
+.tabs { position: fixed; top: 0; left: 0; width: 100%; list-style-type: none; font-size: 0; }
 .tabs li { display: inline-block; width: 33.33%; background: #667FCC; transition: background 200ms ease; }
 .tabs a { display: block; margin: 0 auto; padding: 15px 10px; width: 36px; overflow: hidden; color: #FFF; font-size: 14px; text-align: center; text-decoration: none; transition: color 200ms ease, width 500ms ease; }
 .tabs a:before { padding-right: 5px; font-size: 24px; line-height: 14px; vertical-align: sub; }
@@ -44,6 +44,8 @@ input[type="submit"]:active { background: #798FD2; }
 
 input.small { width: 49%; }
 input.small + .small { margin-left: 2%; }
+
+#input { padding-top: 50px; }
 
 #favorites-form ul {
 	list-style-type: none;
@@ -131,7 +133,6 @@ input.small + .small { margin-left: 2%; }
 	-webkit-transform: rotateZ(-22.62deg) rotateX(12deg) rotateY(30deg) translate(26px, 26px);
 }
 
-.tab-preview { max-height: 0; margin-top: -55px; padding: 65px 10px 0; overflow: hidden; transition: max-height 500ms linear; }
-.tab-preview:target { max-height: 200px; }
+.tab-preview { margin-top: -50px; padding: 55px 10px 10px; overflow: hidden; transition: height 500ms linear; }
 
 #distance { font-size: 24px; text-align: center; }
