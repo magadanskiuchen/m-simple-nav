@@ -1,13 +1,45 @@
 document.addEventListener('DOMContentLoaded', function (e) {
-	var app = new com.magadanski.mSimpleNav.MSimpleNav();
-	var navigation = new com.magadanski.mSimpleNav.Navigation('.tabs');
-	var addressForm = document.getElementById('address-form');
-	var coordinatesForm = document.getElementById('coordinates-form');
-	var favoritesForm = document.getElementById('favorites-form');
-	
-	if (window.location.hash.length > 0) {
-		navigation.goTo(window.location.hash);
+	function getFullHeight(el) {
+		var height = 0;
+		
+		height += (typeof(el.clientHeight) !== 'undefined') ? el.clientHeight : 0;
+		
+		var computedStyle = document.defaultView.getComputedStyle(el, '');
+		if (typeof(computedStyle) !== 'undefined') {
+			height += parseInt(computedStyle.getPropertyValue('margin-top'));
+			height += parseInt(computedStyle.getPropertyValue('margin-bottom'));
+		}
+		
+		return height;
 	}
+	
+	address = new com.magadanski.Address();
+	app = new com.magadanski.mSimpleNav.MSimpleNav();
+	navigation = new com.magadanski.mSimpleNav.Navigation('.tabs');
+	addressForm = document.getElementById('address-form');
+	coordinatesForm = document.getElementById('coordinates-form');
+	favoritesForm = document.getElementById('favorites-form');
+	
+	navigation.addEventListener('change', function (e) {
+		address.setHash(e.href, app.title);
+	});
+	
+	address.addEventListener('change', function (e) {
+		var views = document.querySelector('.views');
+		var activeView = document.querySelector(e.currentTarget.getHash());
+		
+		var i = 0;
+		var tmpView = activeView;
+		
+		while ( (tmpView = tmpView.previousSibling) != null ) {
+			if (typeof(tmpView.tagName) != 'undefined') {
+				i++;
+			}
+		}
+		
+		views.style.transform = 'translateX(-' + (i * 33.333) + '%)';
+		views.style.height = getFullHeight(activeView) + 'px';;
+	});
 	
 	coordinatesForm.addEventListener('submit', function (e) {
 		e.preventDefault();
@@ -45,6 +77,14 @@ document.addEventListener('DOMContentLoaded', function (e) {
 		
 		favoritesForm.innerHTML = app.favoriteLocations.render() + favoritesForm.innerHTML;
 		
+		var views = document.querySelector('.views');
+		var addressHash = address.getHash();
+		
+		if (addressHash.length > 1) {
+			var activeView = document.querySelector(address.getHash());
+			views.style.height = getFullHeight(activeView) + 'px';
+		}
+		
 		var anchors = favoritesForm.querySelectorAll('ul a');
 		
 		if (anchors.length) {
@@ -58,8 +98,12 @@ document.addEventListener('DOMContentLoaded', function (e) {
 		}
 	});
 	
-	// stupid iOS7 and iOS8
-	if (navigator.userAgent.match(/CPU\sOS\s[7,8]_/)) {
-		document.body.style.paddingTop = '24px';
+	if (window.location.hash) {
+		navigation.goTo(window.location.hash);
+	}
+	
+	// stupid iOS
+	if (navigator.userAgent.match(/(iPhone|iPod|iPad)/)) {
+		document.body.style.borderTop = '24px solid #000';
 	}
 });

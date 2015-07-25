@@ -8,13 +8,23 @@ com.magadanski.EventDispatcher;
 	var that;
 	var EventDispatcher = function () {
 		that = this;
+		
+		// private properties
+		
+		// private methods
+		
+		// priviledged properties
+		that.events = {};
+		
+		// priviledged methods
+		
+		// constructor
 	}
 	com.magadanski.EventDispatcher = EventDispatcher;
 	
 	// private properties
 	
 	// public properties
-	EventDispatcher.prototype.events = {};
 	
 	// private methods
 	

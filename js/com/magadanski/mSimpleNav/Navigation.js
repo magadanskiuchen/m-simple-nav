@@ -7,19 +7,24 @@ com.magadanski.mSimpleNav.Navigation;
 	// import class
 	var that;
 	var Navigation = function (containerSelector) {
-		var that = this;
+		that = this;
 		
 		// private properties
 		var ACTIVE_CLASS = 'active';
 		
 		// private methods
 		function menuLinkClickHandler(e) {
+			e.stopPropagation();
+			e.preventDefault();
+			
 			that.lis.removeClass(ACTIVE_CLASS);
 			e.target.parentNode.classList.add(ACTIVE_CLASS);
+			that.dispatchEvent('change', { href: e.target.getAttribute('href') });
 		}
 		
 		// priviledged properties
 		that.container = document.querySelector(containerSelector);
+		that.container.object = that;
 		that.lis = new com.magadanski.DOMCollection(that.container.querySelectorAll('li'));
 		that.links = new com.magadanski.DOMCollection(that.container.querySelectorAll('a'));
 		

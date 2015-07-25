@@ -7,7 +7,7 @@ com.magadanski.mSimpleNav.MSimpleNav;
 	// import class
 	var that;
 	var MSimpleNav = function () {
-		var that = this;
+		that = this;
 		
 		// private properties
 		var tables = {
@@ -103,7 +103,7 @@ com.magadanski.mSimpleNav.MSimpleNav;
 		
 		render();
 	}
-	MSimpleNav.inherits(com.magadanski.EventDispatcher);
+	MSimpleNav.inherits(com.magadanski.App);
 	com.magadanski.mSimpleNav.MSimpleNav = MSimpleNav;
 	
 	// public methods
