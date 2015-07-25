@@ -28,6 +28,8 @@
 	
 	<script type="text/javascript" src="js/com/magadanski/core.js"></script>
 	<script type="text/javascript" src="js/com/magadanski/EventDispatcher.js"></script>
+	<script type="text/javascript" src="js/com/magadanski/App.js"></script>
+	<script type="text/javascript" src="js/com/magadanski/Address.js"></script>
 	<script type="text/javascript" src="js/com/magadanski/Exception.js"></script>
 	<script type="text/javascript" src="js/com/magadanski/DOMCollection.js"></script>
 	<script type="text/javascript" src="js/com/magadanski/mSimpleNav/Location.js"></script>
@@ -49,20 +51,22 @@
 			<li><a class="icon msn-heart" href="#favorites-form">Favorites</a></li>
 		</ul>
 		
-		<form id="address-form" class="tab-preview">
-			<input type="text" id="address" name="address" class="medium" placeholder="Address" />
-			<input type="submit" name="search_by_address" value="Search" />
-		</form>
-		
-		<form id="coordinates-form" class="tab-preview">
-			<input type="number" id="lat" name="lat" class="small lat" placeholder="Latitude" min="-90" max="90" />
-			<input type="number" id="lng" name="lng" class="small lng" placeholder="Longitude" />
-			<input type="submit" name="search_by_coordinates" value="Search" />
-		</form>
-		
-		<form id="favorites-form" class="tab-preview">
-			<input type="submit" name="add_to_favorites" value="Save" />
-		</form>
+		<div class="views">
+			<form id="address-form" class="tab-preview">
+				<input type="text" id="address" name="address" class="medium" placeholder="Address" />
+				<input type="submit" name="search_by_address" value="Search" />
+			</form>
+			
+			<form id="coordinates-form" class="tab-preview">
+				<input type="number" id="lat" name="lat" class="small lat" placeholder="Latitude" min="-90" max="90" />
+				<input type="number" id="lng" name="lng" class="small lng" placeholder="Longitude" />
+				<input type="submit" name="search_by_coordinates" value="Search" />
+			</form>
+			
+			<form id="favorites-form" class="tab-preview">
+				<input type="submit" name="add_to_favorites" value="Save" />
+			</form>
+		</div>
 	</div>
 	
 	<div id="compass">
