@@ -4,8 +4,9 @@ com.magadanski.mSimpleNav.MSimpleNav;
 // MSimpleNav Class Implementation ///
 //////////////////////////////////////
 (function () {
-	// import class
+	// import functions and classes
 	var that;
+	var getFullHeight = com.magadanski.utils.getFullHeight;
 	var MSimpleNav = function () {
 		that = this;
 		
@@ -88,6 +89,22 @@ com.magadanski.mSimpleNav.MSimpleNav;
 		that.favoriteLocations;
 		
 		// priviledged methods
+		this.updateView = function (e) {
+			var views = document.querySelector('.views');
+			var activeView = (typeof(e) !== 'undefined') ? document.querySelector(e.currentTarget.getHash()) : document.querySelector('.views form');
+			
+			var i = 0;
+			var tmpView = activeView;
+			
+			while ( (tmpView = tmpView.previousSibling) != null ) {
+				if (typeof(tmpView.tagName) != 'undefined') {
+					i++;
+				}
+			}
+			
+			views.style.transform = 'translateX(-' + (i * 33.333) + '%)';
+			views.style.height = getFullHeight(activeView) + 'px';;
+		}
 		
 		// constructor
 		that.geocoder = new google.maps.Geocoder();
@@ -102,6 +119,7 @@ com.magadanski.mSimpleNav.MSimpleNav;
 		that.getLocations(onLocationsLoaded);
 		
 		render();
+		that.updateView();
 	}
 	MSimpleNav.inherits(com.magadanski.App);
 	com.magadanski.mSimpleNav.MSimpleNav = MSimpleNav;

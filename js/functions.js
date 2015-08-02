@@ -1,18 +1,8 @@
 document.addEventListener('DOMContentLoaded', function (e) {
-	function getFullHeight(el) {
-		var height = 0;
-		
-		height += (typeof(el.clientHeight) !== 'undefined') ? el.clientHeight : 0;
-		
-		var computedStyle = document.defaultView.getComputedStyle(el, '');
-		if (typeof(computedStyle) !== 'undefined') {
-			height += parseInt(computedStyle.getPropertyValue('margin-top'));
-			height += parseInt(computedStyle.getPropertyValue('margin-bottom'));
-		}
-		
-		return height;
-	}
+	// import functions and classes
+	var getFullHeight = com.magadanski.utils.getFullHeight;
 	
+	// instantiate objects
 	address = new com.magadanski.Address();
 	app = new com.magadanski.mSimpleNav.MSimpleNav();
 	navigation = new com.magadanski.mSimpleNav.Navigation('.tabs');
@@ -24,22 +14,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
 		address.setHash(e.href, app.title);
 	});
 	
-	address.addEventListener('change', function (e) {
-		var views = document.querySelector('.views');
-		var activeView = document.querySelector(e.currentTarget.getHash());
-		
-		var i = 0;
-		var tmpView = activeView;
-		
-		while ( (tmpView = tmpView.previousSibling) != null ) {
-			if (typeof(tmpView.tagName) != 'undefined') {
-				i++;
-			}
-		}
-		
-		views.style.transform = 'translateX(-' + (i * 33.333) + '%)';
-		views.style.height = getFullHeight(activeView) + 'px';;
-	});
+	address.addEventListener('change', app.updateView);
 	
 	coordinatesForm.addEventListener('submit', function (e) {
 		e.preventDefault();
