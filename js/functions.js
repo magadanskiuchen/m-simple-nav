@@ -4,8 +4,9 @@ document.addEventListener('DOMContentLoaded', function (e) {
 	
 	// instantiate objects
 	address = new com.magadanski.Address();
-	app = new com.magadanski.mSimpleNav.MSimpleNav({ views: '.views form' });
+	app = new com.magadanski.mSimpleNav.MSimpleNav();
 	navigation = new com.magadanski.mSimpleNav.Navigation('.tabs');
+	views = new com.magadanski.mSimpleNav.Views('.views');
 	addressForm = document.getElementById('address-form');
 	coordinatesForm = document.getElementById('coordinates-form');
 	favoritesForm = document.getElementById('favorites-form');
@@ -14,7 +15,10 @@ document.addEventListener('DOMContentLoaded', function (e) {
 		address.setHash(e.href, app.title);
 	});
 	
-	address.addEventListener('change', app.updateViewArea);
+	address.addEventListener('change', views.updateViewArea);
+	if (address.getHash() === '') {
+		navigation.goTo('#' + views.getViews().elements[0].getAttribute('id'));
+	}
 	
 	coordinatesForm.addEventListener('submit', function (e) {
 		e.preventDefault();
