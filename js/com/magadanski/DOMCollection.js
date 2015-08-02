@@ -15,12 +15,16 @@ com.magadanski.DOMCollection;
 		
 		if (typeof(selector) == 'string') {
 			selection = document.querySelectorAll(selector);
-		} else { // support to pass a result of querySelectorAll or similar
+		} else if (typeof(selector) == 'object') { // support to pass a result of querySelectorAll or similar
 			selection = selector;
+		} else {
+			selection = false;
 		}
 		
-		for (var i = 0; i < selection.length; i++) {
-			that.elements.push(selection.item(i));
+		if (!!selection) {
+			for (var i = 0; i < selection.length; i++) {
+				that.elements.push(selection.item(i));
+			}
 		}
 	}
 	com.magadanski.DOMCollection = DOMCollection;
@@ -58,5 +62,17 @@ com.magadanski.DOMCollection;
 		for (e in this.elements) {
 			callback(e, this.elements[e]);
 		}
+	}
+	
+	DOMCollection.prototype.filter = function (selector) {
+		var filteredElements = new DOMCollection();
+		
+		for (e in this.elements) {
+			if (this.elements[e].matches(selector)) {
+				filteredElements.elements.push(this.elements[e]);
+			}
+		}
+		
+		return filteredElements;
 	}
 })();
