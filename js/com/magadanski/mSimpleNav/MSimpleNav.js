@@ -4,8 +4,9 @@ com.magadanski.mSimpleNav.MSimpleNav;
 // MSimpleNav Class Implementation ///
 //////////////////////////////////////
 (function () {
-	// import class
+	// import functions and classes
 	var that;
+	
 	var MSimpleNav = function () {
 		that = this;
 		
@@ -30,9 +31,9 @@ com.magadanski.mSimpleNav.MSimpleNav;
 			}
 			
 			document.getElementById('distance').innerText = that.gps.getDistanceTo(that.destination) + ' km';
-			document.getElementById('compass').style.webkitTransform = 'rotateX(' + that.compass.getDeviceTilt() + 'deg) rotateZ(' + that.displayBearing + 'deg)';
+			document.getElementById('compass').style.webkitTransform = 'rotateZ(' + that.displayBearing + 'deg)';
 			
-			requestAnimationFrame(render);
+			setTimeout(render, 100);
 		}
 		
 		function onGeocoded(e) {
