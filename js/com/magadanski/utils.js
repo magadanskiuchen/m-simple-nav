@@ -13,3 +13,11 @@ com.magadanski.utils.getFullHeight = function (el) {
 	
 	return height;
 }
+
+com.magadanski.utils.extendOptions = function (defaults, options) {
+	for (o in options) {
+		defaults[o] = options[o];
+	}
+	
+	return defaults;
+}
