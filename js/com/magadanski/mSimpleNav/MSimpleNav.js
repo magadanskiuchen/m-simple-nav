@@ -7,10 +7,17 @@ com.magadanski.mSimpleNav.MSimpleNav;
 	// import functions and classes
 	var that;
 	var getFullHeight = com.magadanski.utils.getFullHeight;
-	var MSimpleNav = function () {
+	var extendOptions = com.magadanski.utils.extendOptions;
+	
+	var MSimpleNav = function (options) {
 		that = this;
 		
 		// private properties
+		var defaultOptions = {
+			views: false
+		};
+		options = extendOptions(defaultOptions, options);
+		
 		var tables = {
 			'locations': {
 				id: { type: 'INTEGER', primaryKey: true, autoIncrement: true },
@@ -19,6 +26,10 @@ com.magadanski.mSimpleNav.MSimpleNav;
 				lng: { type: 'TEXT' }
 			}
 		}
+		
+		var views = new com.magadanski.DOMCollection(options.views);
+		var activeView = false;
+		var activeViewIndex = 0;
 		
 		// private methods
 		function render() {
@@ -89,21 +100,37 @@ com.magadanski.mSimpleNav.MSimpleNav;
 		that.favoriteLocations;
 		
 		// priviledged methods
-		this.updateView = function (e) {
-			var views = document.querySelector('.views');
-			var activeView = (typeof(e) !== 'undefined') ? document.querySelector(e.currentTarget.getHash()) : document.querySelector('.views form');
+		this.addView = function (view) {
+			views.elements.push(view);
+		}
+		
+		this.getView = function (i) {
+			var view = false;
 			
-			var i = 0;
-			var tmpView = activeView;
-			
-			while ( (tmpView = tmpView.previousSibling) != null ) {
-				if (typeof(tmpView.tagName) != 'undefined') {
-					i++;
-				}
+			if (typeof(views.elements[i]) !== 'undefined') {
+				view = views.elements[i];
 			}
 			
-			views.style.transform = 'translateX(-' + (i * 33.333) + '%)';
-			views.style.height = getFullHeight(activeView) + 'px';;
+			return view;
+		}
+		
+		this.getViews = function () {
+			return views;
+		}
+		
+		this.updateViewArea = function (e) {
+			activeView = (typeof(e) !== 'undefined') ? views.filter(e.currentTarget.getHash()).elements[0] : views.elements[0];
+			
+			var i = 0;
+			
+			views.each(function (j, view) {
+				if (view.getAttribute('id') == activeView.getAttribute('id')) {
+					i = j;
+				}
+			});
+			
+			view.style.transform = 'translateX(-' + (100 * i * (1 / views.elements.length)) + '%)';
+			view.style.height = getFullHeight(activeView) + 'px';
 		}
 		
 		// constructor
@@ -119,7 +146,7 @@ com.magadanski.mSimpleNav.MSimpleNav;
 		that.getLocations(onLocationsLoaded);
 		
 		render();
-		that.updateView();
+		that.updateViewArea();
 	}
 	MSimpleNav.inherits(com.magadanski.App);
 	com.magadanski.mSimpleNav.MSimpleNav = MSimpleNav;
