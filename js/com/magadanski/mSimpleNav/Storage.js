@@ -126,6 +126,8 @@ com.magadanski.mSimpleNav.Storage;
 					conditions.push(options.conditions[c].field + ' ' + options.conditions.operator + ' ?');
 					parameters.push(options.conditions[c].value);
 				}
+				
+				// TODO: finalize get method
 			}
 			
 			tx.executeSql(select + from + where, parameters, function (tx, results) {
@@ -138,5 +140,44 @@ com.magadanski.mSimpleNav.Storage;
 		});
 	}
 	
-	// TODO: add UPDATE and DELETE capabilities
+	// TODO: add UPDATE capability
+	
+	Storage.prototype.delete = function (table, options, callback) {
+		var that = this;
+		
+		that.db.transaction(function (tx) {
+			var del = 'DELETE ';
+			var from = ' FROM ' + table;
+			var where = ' WHERE ';
+			var conditions = [];
+			var parameters = [];
+			
+			if (typeof(options.conditions) === 'undefined') {
+				throw new com.magadanski.Exception('conditions missing for deletion');
+			}
+			
+			for (var c in options.conditions) {
+				if (typeof(options.conditions[c].operator) == 'undefined') {
+					options.conditions[c].operator = '=';
+				}
+				
+				conditions.push(options.conditions[c].field + ' ' + options.conditions[c].operator + ' ?');
+				parameters.push(options.conditions[c].value);
+			}
+			
+			if (typeof(options.conditionsRelation) === 'undefined') {
+				options.conditionsRelation = ' AND ';
+			}
+			
+			where += conditions.join(options.conditionsRelation);
+			
+			tx.executeSql(del + from + where, parameters, function (tx, results) {
+				if (typeof(callback) == 'function') {
+					callback(results);
+				}
+			}, function (tx, error) {
+				alert(i18n.delete_error);
+			});
+		});
+	}
 })();

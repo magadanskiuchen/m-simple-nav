@@ -35,7 +35,10 @@ com.magadanski.mSimpleNav.LocationsDataList;
 					that.clearData(this.parentElement.dataset.dataIndex);
 					this.parentElement.remove();
 					
-					that.dispatchEvent('dataChanged', { message: 'list data has changed' });
+					that.dispatchEvent('dataChanged', {
+						message: 'list data has changed',
+						deleted: this.parentElement.dataset.locationId
+					});
 				}
 			});
 			

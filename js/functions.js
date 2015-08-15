@@ -81,6 +81,12 @@ document.addEventListener('DOMContentLoaded', function (e) {
 		});
 	});
 	
+	app.favoriteLocations.addEventListener('dataChanged', function (e) {
+		if (typeof(e.deleted) !== 'undefined') {
+			app.deleteLocation({ conditions: [{ field: 'id', value: e.deleted }] });
+		}
+	});
+	
 	if (window.location.hash) {
 		navigation.goTo(window.location.hash);
 	}

@@ -13,6 +13,7 @@ switch (locale) {
 		i18n.favorites_data_storage_setup_error = 'Възникна грешка при създаването на списъка с любими места. Моля свържете се с програмиста.';
 		i18n.saving_location_error = 'Възникна грешка при записването на мястото. Моля опитайте отново и ако проблемът продължи се свържете с програмиста.';
 		i18n.entries_retrieval_error = 'Записите не могат да бъдат прочетени. Моля свържете се с програмиста.';
+		i18n.delete_error = 'Възникна грешка при изтриването. Моля опитайте отново. Ако проблемът продължи се свържете с програмиста.';
 		
 		i18n.are_you_sure = 'Сигурни ли сте?';
 		break;
@@ -28,6 +29,7 @@ switch (locale) {
 		i18n.favorites_data_storage_setup_error = 'There was an error with setting up favorites data storage. Please contact the developer.';
 		i18n.saving_location_error = 'There was an error saving your location. Please try again. If this remains happening contact the developer.';
 		i18n.entries_retrieval_error = 'Could not retrieve entries. Please contact developer.';
+		i18n.delete_error = 'Deletion failed. Please try again. Is the issue persists contact the developer.';
 		
 		i18n.are_you_sure = 'Are you sure?';
 		break;
