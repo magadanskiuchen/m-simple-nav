@@ -7,14 +7,23 @@ com.magadanski.DOMCollection;
 	// import class
 	var that;
 	
-	var DOMCollection = function (selector) {
+	var DOMCollection = function (selector, context) {
 		that = this;
 		that.elements = [];
 		
 		var selection = null;
+		var callFunction = 'querySelectorAll';
+		
+		if (context instanceof HTMLElement) {
+			// all OK -- no need to do anything
+		} else if (context instanceof DOMCollection) {
+			callFunction = 'find';
+		} else {
+			context = document;
+		}
 		
 		if (typeof(selector) == 'string') {
-			selection = document.querySelectorAll(selector);
+			context[callFunction](selector);
 		} else if (typeof(selector) == 'object') { // support to pass a result of querySelectorAll or similar
 			selection = selector;
 		} else {
@@ -35,44 +44,60 @@ com.magadanski.DOMCollection;
 	
 	// public methods
 	DOMCollection.prototype.addEventListener = function (eventType, callback) {
-		for (e in this.elements) {
-			this.elements[e].addEventListener(eventType, callback);
-		}
+		this.elements.map(function (el) {
+			el.addEventListener(eventType, callback);
+		});
 	}
 	
 	DOMCollection.prototype.removeEventListener = function (eventType, eventObj) {
-		for (e in this.elements) {
-			this.elements[e].removeEventListener(eventType, callback);
-		}
+		this.elements.map(function (el) {
+			el.removeEventListener(eventType, callback);
+		});
 	}
 	
 	DOMCollection.prototype.addClass = function (className) {
-		for (e in this.elements) {
-			this.elements[e].classList.add(className);
-		}
+		this.elements.map(function (el) {
+			el.classList.add(className);
+		});
 	}
 	
 	DOMCollection.prototype.removeClass = function (className) {
-		for (e in this.elements) {
-			this.elements[e].classList.remove(className);
-		}
+		this.elements.map(function (el) {
+			el.classList.remove(className);
+		});
 	}
 	
 	DOMCollection.prototype.each = function (callback) {
-		for (e in this.elements) {
-			callback(e, this.elements[e]);
-		}
+		this.elements.map(function (el, i) {
+			callback(i, el);
+		});
 	}
 	
 	DOMCollection.prototype.filter = function (selector) {
 		var filteredElements = new DOMCollection();
 		
-		for (e in this.elements) {
-			if (this.elements[e].matches(selector)) {
-				filteredElements.elements.push(this.elements[e]);
+		this.elements.map(function (el) {
+			if (el.matches(selector)) {
+				filteredElements.elements.push(el);
 			}
-		}
+		});
 		
 		return filteredElements;
+	}
+	
+	DOMCollection.prototype.find = function (selector) {
+		var foundElements = new DOMCollection();
+		
+		this.elements.map(function (el) {
+			foundElements.elements.concat(el.querySelectorAll(selector));
+		});
+		
+		return foundElements;
+	}
+	
+	DOMCollection.prototype.remove = function () {
+		this.elements.map(function (el) {
+			el.remove();
+		});
 	}
 })();
