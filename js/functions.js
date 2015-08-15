@@ -48,7 +48,8 @@ document.addEventListener('DOMContentLoaded', function (e) {
 	});
 	
 	app.favoriteLocations.addEventListener('dataChanged', function (e) {
-		var list = favoritesForm.querySelector('ul');
+		var list = new com.magadanski.DOMCollection('ul', favoritesForm);
+		// TODO: test with ol once entry deletion works
 		
 		if (!!list) {
 			list.remove();
@@ -56,25 +57,22 @@ document.addEventListener('DOMContentLoaded', function (e) {
 		
 		favoritesForm.innerHTML = app.favoriteLocations.render() + favoritesForm.innerHTML;
 		
-		var views = document.querySelector('.views');
+		var views = new com.magadanski.DOMCollection('.views');
 		var addressHash = address.getHash();
 		
 		if (addressHash.length > 1) {
 			var activeView = document.querySelector(address.getHash());
-			views.style.height = getFullHeight(activeView) + 'px';
+			// views.style.height = getFullHeight(activeView) + 'px';
+			views.css({ height: getFullHeight(activeView) + 'px' });
 		}
 		
-		var anchors = favoritesForm.querySelectorAll('ul a');
+		var locations = new com.magadanski.DOMCollection('ul li', favoritesForm);
 		
-		if (anchors.length) {
-			for (var i = 0; i < anchors.length; i++) {
-				anchors.item(i).addEventListener('click', function (e) {
-						e.preventDefault();
-						
-						app.setDestination(e.currentTarget.dataset.locationLat, e.currentTarget.dataset.locationLng);
-				});
-			}
-		}
+		locations.addEventListener('click', function (e) {
+			e.preventDefault();
+			
+			app.setDestination(e.currentTarget.dataset.locationLat, e.currentTarget.dataset.locationLng);
+		});
 	});
 	
 	if (window.location.hash) {

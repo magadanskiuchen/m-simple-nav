@@ -45,12 +45,11 @@ input.small + .small { margin-left: 2%; }
 .tab-preview { display: inline; float: left; margin-top: -50px; padding: 50px 10px 0; width: 33.333%; }
 
 #favorites-form ul { list-style-type: none; margin: 0 0 10px; border: 1px solid #CCC; background: #FFF; font-size: 16px; }
-#favorites-form ul li { border-bottom: 1px solid #CCC; }
+#favorites-form ul li { border-bottom: 1px solid #CCC; padding: 8px 10px; color: #333; text-decoration: none; cursor: pointer; }
+#favorites-form ul li:nth-of-type(even) { background: #E0E0E0; }
 #favorites-form ul li:last-child { border: none; }
-#favorites-form ul li:nth-of-type(even) a { background: #E0E0E0; }
-#favorites-form ul li a { display: block; padding: 8px 10px; color: #333; text-decoration: none; }
 
-#favorites-form ul li a:active { color: #FFF; background: #1262B2; }
+#favorites-form ul li:active { color: #FFF; background: #1262B2; }
 
 #compass { position: relative; width: 120px; height: 144px; margin: 25px auto; font-size: 0;
 	-webkit-transform: rotateX(0deg) rotateZ(0deg); transition: transform 0.3s ease; }
