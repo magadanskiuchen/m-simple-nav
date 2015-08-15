@@ -23,7 +23,7 @@ com.magadanski.DOMCollection;
 		}
 		
 		if (typeof(selector) == 'string') {
-			context[callFunction](selector);
+			selection = context[callFunction](selector);
 		} else if (typeof(selector) == 'object') { // support to pass a result of querySelectorAll or similar
 			selection = selector;
 		} else {
@@ -70,6 +70,14 @@ com.magadanski.DOMCollection;
 	DOMCollection.prototype.each = function (callback) {
 		this.elements.map(function (el, i) {
 			callback(i, el);
+		});
+	}
+	
+	DOMCollection.prototype.css = function (styles) {
+		this.elements.map(function (el) {
+			for (att in styles) {
+				el.style[att] = styles[att];
+			}
 		});
 	}
 	
