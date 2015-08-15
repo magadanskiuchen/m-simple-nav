@@ -149,4 +149,12 @@ com.magadanski.mSimpleNav.MSimpleNav;
 		
 		that.storage.get('locations', {}, callback);
 	}
+	
+	MSimpleNav.prototype.deleteLocation = function (options, callback) {
+		var that = this;
+		
+		that.storage.delete('locations', options, function (tx, results) {
+			that.dispatchEvent('locationsUpdated', { results: results });
+		});
+	}
 })();

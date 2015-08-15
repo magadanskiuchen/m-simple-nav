@@ -10,7 +10,7 @@ com.magadanski.Address;
 		that = this;
 		
 		// private properties
-		var hash = '';
+		var hash = window.location.hash;
 		var state = '';
 		
 		// private methods
