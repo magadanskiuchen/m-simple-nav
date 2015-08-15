@@ -47,7 +47,7 @@ input.small + .small { margin-left: 2%; }
 .tab-preview { display: inline; float: left; margin-top: -50px; padding: 50px 10px 0; width: 33.333%; }
 
 #favorites-form ul { list-style-type: none; margin: 0 0 10px; border: 1px solid #CCC; background: #FFF; font-size: 16px; }
-#favorites-form ul li { border-bottom: 1px solid #CCC; padding: 8px 10px; color: #333; text-decoration: none; cursor: pointer; }
+#favorites-form ul li { overflow: hidden; border-bottom: 1px solid #CCC; padding: 8px 10px; color: #333; text-decoration: none; cursor: pointer; }
 #favorites-form ul li:nth-of-type(even) { background: #E0E0E0; }
 #favorites-form ul li:last-child { border: none; }
 #favorites-form ul li .icon { float: right; margin-left: 22px; font-size: 22px; }

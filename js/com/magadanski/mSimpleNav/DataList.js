@@ -8,43 +8,21 @@ com.magadanski.mSimpleNav.DataList;
 	var DataList = function (options) {
 		var that = this;
 		var data = [];
+		var options = (typeof(options) !== 'undefined') ? options : {};
+		var defaults = { containerTag: 'ul', itemTag: 'li' };
 		
 		// private properties
 		
+		// priviledged properties
+		that.options = options;
+		
 		// private methods
 		
-		// constructor
-		if (typeof(options) != 'object') {
-			options = {};
-		}
-		
-		if (typeof(options.startList) != 'function') {
-			options.startList = function () {
-				return '<ul>';
-			}
-		}
-		
-		if (typeof(options.endList) != 'function') {
-			options.endList = function () {
-				return '</ul>';
-			}
-		}
-		
-		if (typeof(options.renderItem) != 'function') {
-			options.renderItem = function (item) {
-				return '<li>' + item + '</li>';
-			}
-		}
-		
 		// priviledged methods
-		that.startList = options.startList;
-		that.endList = options.endList;
-		that.renderItem = options.renderItem;
-		
 		that.getData = function (i) {
 			var result = data;
 			
-			if (typeof(i) !== 'undefined' && typeof(data[i]) !== 'undefined') {
+			if (typeof(i) !== 'undefined' && typeof(data[i]) !== 'undefined' && !!data[i]) {
 				result = data[i];
 			}
 			
@@ -70,7 +48,7 @@ com.magadanski.mSimpleNav.DataList;
 		that.clearData = function (i) {
 			if (typeof(i) !== 'undefined') {
 				if (typeof(data[i]) !== 'undefined') {
-					data[i] = null;
+					data.splice(i, 1);
 				} else {
 					throw new com.magadanski.Exception('index ' + i + ' does not exist in data array');
 				}
@@ -80,6 +58,33 @@ com.magadanski.mSimpleNav.DataList;
 			
 			that.dispatchEvent('dataChanged', { message: 'list data has changed' });
 		}
+		
+		that.createContainer = function () {
+			var container = document.createElement(that.options.containerTag);
+			container.classList.add('datalist');
+			
+			return container;
+		}
+		
+		that.createItem = function (content, i) {
+			var item = document.createElement(that.options.itemTag);
+			item.innerHTML = content;
+			
+			return item;
+		}
+		
+		// constructor
+		that.init = function () {
+			that.options = options;
+			
+			for (var o in defaults) {
+				if (typeof(that.options[o]) === 'undefined') {
+					that.options[o] = defaults[o];
+				}
+			}
+		}
+		
+		that.init();
 	}
 	DataList.inherits(com.magadanski.EventDispatcher);
 	com.magadanski.mSimpleNav.DataList = DataList;
@@ -87,19 +92,22 @@ com.magadanski.mSimpleNav.DataList;
 	// public properties
 	
 	// public methods
-	DataList.prototype.render = function () {
+	DataList.prototype.build = function () {
 		var that = this;
-		var markup = '';
 		var data = that.getData();
 		
-		markup += that.startList();
+		var list = that.createContainer();
 		
 		for (var i in data) {
-			markup += that.renderItem(data[i]);
+			var item = that.createItem(data[i], i);
+			
+			list.appendChild(item);
 		}
 		
-		markup += that.endList();
-		
-		return markup;
+		return list;
+	}
+	
+	DataList.prototype.getOptions = function () {
+		return this.options;
 	}
 })();

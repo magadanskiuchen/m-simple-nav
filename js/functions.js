@@ -55,14 +55,20 @@ document.addEventListener('DOMContentLoaded', function (e) {
 			list.remove();
 		}
 		
-		favoritesForm.innerHTML = app.favoriteLocations.render() + favoritesForm.innerHTML;
+		var favoritesList = favoritesForm.querySelector('.datalist');
+		
+		if (!!favoritesList) {
+			favoritesList.remove();
+		}
+		favoritesList = app.favoriteLocations.build();
+		
+		favoritesForm.insertBefore(favoritesList, favoritesForm.querySelector('input[type="submit"]'));
 		
 		var views = new com.magadanski.DOMCollection('.views');
 		var addressHash = address.getHash();
 		
 		if (addressHash.length > 1) {
 			var activeView = document.querySelector(address.getHash());
-			// views.style.height = getFullHeight(activeView) + 'px';
 			views.css({ height: getFullHeight(activeView) + 'px' });
 		}
 		
