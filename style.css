@@ -14,7 +14,8 @@ body { background: #FFF; color: #000; font: normal 14px/1.2 "Droid Sans", Arial,
 
 a { color: #262680; text-decoration: none; }
 
-.icon { speak: none; font-style: normal; font-weight: normal; font-variant: normal; font-family: 'm-simple-nav-nav'; text-transform: none; line-height: 1; }
+.icon { speak: none; font-style: normal; font-weight: normal; font-variant: normal; text-transform: none; line-height: 1; }
+.icon:before { font-family: 'm-simple-nav-nav'; }
 
 .tabs { position: fixed; z-index: 100; top: 0; left: 0; width: 100%; list-style-type: none; font-size: 0; }
 .tabs li { display: inline-block; width: 33.33%; background: #667FCC; transition: background 200ms ease; }

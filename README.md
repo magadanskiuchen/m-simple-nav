@@ -1,8 +1,6 @@
 M Simple Nav
 ============
 
-This is a pure web version of the M Simple Nav Cordova application (https://github.com/magadanskiuchen/m-simple-nav-cordova).
-
 Currently the application is hosted at http://magadanski.com/mSimpleNav/.
 
 ## Usage
